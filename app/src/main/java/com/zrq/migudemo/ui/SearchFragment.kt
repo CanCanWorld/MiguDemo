@@ -10,7 +10,7 @@ import com.google.gson.Gson
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.OnItemClickListener
 import com.zrq.migudemo.adapter.SearchAdapter
-import com.zrq.migudemo.bean.Song
+import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.FragmentSearchBinding
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SEARCH
@@ -25,7 +25,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnItemClickListene
         return FragmentSearchBinding.inflate(inflater, container, false)
     }
 
-    private val list = ArrayList<Song.MusicsDTO>()
+    private val list = ArrayList<SearchSong.MusicsDTO>()
     private lateinit var adapter: SearchAdapter
 
     override fun initData() {
@@ -53,7 +53,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnItemClickListene
                         if (response.body != null) {
                             val json = response.body!!.string()
                             Log.d(TAG, "onResponse: $json")
-                            val song = Gson().fromJson(json, Song::class.java)
+                            val song = Gson().fromJson(json, SearchSong::class.java)
                             list.clear()
                             list.addAll(song.musics)
                             requireActivity().runOnUiThread {
@@ -73,6 +73,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnItemClickListene
     override fun onClick(view: View, position: Int) {
         mainModel.nowPlaying.postValue(list[position])
         Navigation.findNavController(requireActivity(), R.id.fragment_container)
+            .navigate(R.id.action_global_playFragment)
     }
 
     override fun onLongClick(view: View, position: Int): Boolean {

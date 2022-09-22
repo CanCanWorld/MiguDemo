@@ -4,12 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.zrq.migudemo.bean.Song
+import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.ItemSearchSongBinding
 
 class SearchAdapter(
     private val context: Context,
-    private val list: ArrayList<Song.MusicsDTO>,
+    private val list: ArrayList<SearchSong.MusicsDTO>,
     var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<VH<ItemSearchSongBinding>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH<ItemSearchSongBinding> {

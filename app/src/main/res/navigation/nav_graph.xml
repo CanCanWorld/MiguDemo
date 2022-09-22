@@ -10,4 +10,16 @@
         android:name="com.zrq.migudemo.ui.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/playFragment"
+        android:name="com.zrq.migudemo.ui.PlayFragment"
+        android:label="fragment_play"
+        tools:layout="@layout/fragment_play" />
+    <action
+        android:id="@+id/action_global_playFragment"
+        app:destination="@id/playFragment"
+        app:enterAnim="@anim/from_right"
+        app:exitAnim="@anim/to_left"
+        app:popEnterAnim="@anim/from_left"
+        app:popExitAnim="@anim/to_right" />
 </navigation>
