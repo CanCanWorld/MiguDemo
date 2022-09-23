@@ -2,6 +2,7 @@ package com.zrq.migudemo.ui
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -25,7 +26,6 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
 
     private lateinit var animation: ValueAnimator
     private lateinit var nowPlaying: SearchSong.MusicsDTO
-    private lateinit var nowSong: Song
 
     override fun initData() {
         initAnimation()
@@ -39,6 +39,7 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
                 loadSong()
             }
         }
+
 
     }
 
@@ -61,7 +62,10 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
                         val json = response.body!!.string()
                         Log.d(TAG, "onResponse: $json")
                         val song = Gson().fromJson(json, Song::class.java)
-                        nowSong = song
+                        requireActivity().runOnUiThread {
+                            mainModel.nowSong = song
+                            mainModel.play()
+                        }
                     }
                 }
             })
@@ -93,6 +97,7 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
     override fun onPause() {
         super.onPause()
         animation.pause()
+        mainModel.pause()
     }
 
     companion object {
