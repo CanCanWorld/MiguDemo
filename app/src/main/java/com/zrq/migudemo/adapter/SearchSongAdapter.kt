@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.ItemSearchSongBinding
+import com.zrq.migudemo.interfaces.OnItemClickListener
 
-class SearchAdapter(
+class SearchSongAdapter(
     private val context: Context,
     private val list: ArrayList<SearchSong.MusicsDTO>,
     var onItemClickListener: OnItemClickListener
@@ -19,10 +20,13 @@ class SearchAdapter(
     }
 
     override fun onBindViewHolder(holder: VH<ItemSearchSongBinding>, position: Int) {
-        holder.binding.tvSong.text = list[position].songName
-        holder.binding.tvSinger.text = list[position].singerName
-        holder.binding.itemRoot.setOnClickListener {
-            onItemClickListener.onClick(it, position)
+        holder.binding.apply {
+            tvSong.text = list[position].songName
+            tvSinger.text = list[position].singerName
+            tvAlbum.text = list[position].albumName
+            itemRoot.setOnClickListener {
+                onItemClickListener.onItemClick(it, position)
+            }
         }
     }
 

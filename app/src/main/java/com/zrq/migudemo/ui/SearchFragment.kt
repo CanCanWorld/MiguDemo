@@ -1,23 +1,17 @@
 package com.zrq.migudemo.ui
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
-import com.zrq.migudemo.R
-import com.zrq.migudemo.adapter.OnItemClickListener
-import com.zrq.migudemo.adapter.SearchAdapter
-import com.zrq.migudemo.bean.SearchSong
+import com.zrq.migudemo.adapter.SearchResultAdapter
 import com.zrq.migudemo.databinding.FragmentSearchBinding
-import com.zrq.migudemo.util.Constants.BASE_URL
-import com.zrq.migudemo.util.Constants.SEARCH
-import okhttp3.*
-import java.io.IOException
+import com.zrq.migudemo.util.Constants.TYPE_ALBUM
+import com.zrq.migudemo.util.Constants.TYPE_LYRICS
+import com.zrq.migudemo.util.Constants.TYPE_MV
+import com.zrq.migudemo.util.Constants.TYPE_SINGER
+import com.zrq.migudemo.util.Constants.TYPE_SONG
+import com.zrq.migudemo.util.Constants.TYPE_SONG_LIST
 
-class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnItemClickListener {
+class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -25,59 +19,38 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnItemClickListene
         return FragmentSearchBinding.inflate(inflater, container, false)
     }
 
-    private val list = ArrayList<SearchSong.MusicsDTO>()
-    private lateinit var adapter: SearchAdapter
+    lateinit var adapter: SearchResultAdapter
 
     override fun initData() {
-        adapter = SearchAdapter(requireContext(), list, this)
-        mBinding.rvSearch.adapter = adapter
-        mBinding.rvSearch.layoutManager = LinearLayoutManager(context)
+        val fragmentList = ArrayList<SearchResultFragment>()
+        val titles = ArrayList<String>()
+        fragmentList.add(SearchResultFragment.newInstance(TYPE_SONG))
+        fragmentList.add(SearchResultFragment.newInstance(TYPE_SINGER))
+        fragmentList.add(SearchResultFragment.newInstance(TYPE_SONG_LIST))
+        fragmentList.add(SearchResultFragment.newInstance(TYPE_ALBUM))
+        fragmentList.add(SearchResultFragment.newInstance(TYPE_MV))
+        fragmentList.add(SearchResultFragment.newInstance(TYPE_LYRICS))
+        titles.add("歌曲")
+        titles.add("歌手")
+        titles.add("歌单")
+        titles.add("专辑")
+        titles.add("MV")
+        titles.add("歌词")
+        adapter = SearchResultAdapter(childFragmentManager, fragmentList, titles)
+        mBinding.viewPager.adapter = adapter
+        mBinding.tabLayout.setupWithViewPager(mBinding.viewPager)
     }
 
     override fun initEvent() {
-        mBinding.btnSearch.setOnClickListener {
-            val searchStr = mBinding.etSearch.text.toString()
-            if (searchStr.isNotEmpty()) {
-                val url = "$BASE_URL$SEARCH?key=$searchStr"
-                Log.d(TAG, "initEvent: $url")
-                val request: Request = Request.Builder()
-                    .url(url)
-                    .get()
-                    .build()
-                OkHttpClient().newCall(request).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        Log.d(TAG, "onFailure: ")
-                    }
 
-                    override fun onResponse(call: Call, response: Response) {
-                        if (response.body != null) {
-                            val json = response.body!!.string()
-                            Log.d(TAG, "onResponse: $json")
-                            val song = Gson().fromJson(json, SearchSong::class.java)
-                            list.clear()
-                            list.addAll(song.musics)
-                            requireActivity().runOnUiThread {
-                                adapter.notifyItemRangeInserted(0, list.size)
-                            }
-                        }
-                    }
-                })
-            }
+        mBinding.btnSearch.setOnClickListener {
+            val key = mBinding.etSearch.text.toString()
+            mainModel.key.postValue(key)
         }
     }
 
     companion object {
         const val TAG = "SearchFragment"
-    }
-
-    override fun onClick(view: View, position: Int) {
-        mainModel.nowPlaying.postValue(list[position])
-        Navigation.findNavController(requireActivity(), R.id.fragment_container)
-            .navigate(R.id.action_global_playFragment)
-    }
-
-    override fun onLongClick(view: View, position: Int): Boolean {
-        return true
     }
 
 }

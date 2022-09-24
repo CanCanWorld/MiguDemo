@@ -22,4 +22,16 @@
         app:exitAnim="@anim/to_left"
         app:popEnterAnim="@anim/from_left"
         app:popExitAnim="@anim/to_right" />
+    <fragment
+        android:id="@+id/singerInfoFragment"
+        android:name="com.zrq.migudemo.ui.SingerInfoFragment"
+        android:label="fragment_singer_info"
+        tools:layout="@layout/fragment_singer_info" />
+    <action
+        android:id="@+id/action_global_singerInfoFragment"
+        app:destination="@id/singerInfoFragment"
+        app:enterAnim="@anim/from_right"
+        app:exitAnim="@anim/to_left"
+        app:popEnterAnim="@anim/from_left"
+        app:popExitAnim="@anim/to_right" />
 </navigation>

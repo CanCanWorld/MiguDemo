@@ -130,7 +130,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:progressBackgroundTint="@color/progress"
+            android:progressBackgroundTint="@color/white_"
             android:progressTint="@color/progress_"
             android:thumbTint="@color/white" />
 

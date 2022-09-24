@@ -16,4 +16,11 @@ object Constants {
     const val SUGGEST_SEARCH = "/suggestSearch"
 
     const val LYRIC = "/lyric"
+
+    const val TYPE_SINGER = 1
+    const val TYPE_SONG = 2
+    const val TYPE_ALBUM = 4
+    const val TYPE_MV = 5
+    const val TYPE_SONG_LIST = 6
+    const val TYPE_LYRICS = 7
 }

@@ -10,6 +10,12 @@
     <color name="grey">#B3B3B3</color>
     <color name="play_bg">#737B7D</color>
     <color name="transparent">#00ffffff</color>
-    <color name="progress">#C9FFFFFF</color>
+    <color name="white_">#D0FFFFFF</color>
+    <color name="white__">#B5FFFFFF</color>
+    <color name="white___">#81FFFFFF</color>
+    <color name="white____">#31FFFFFF</color>
     <color name="progress_">#ECFFFFFF</color>
+    <color name="red">#D53C36</color>
+    <color name="red_tab">#D63D35</color>
+    <color name="red_et">#EA9F9C</color>
 </resources>

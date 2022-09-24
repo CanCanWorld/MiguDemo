@@ -2,7 +2,6 @@ package com.zrq.migudemo.ui
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -97,7 +96,6 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
     override fun onPause() {
         super.onPause()
         animation.pause()
-        mainModel.pause()
     }
 
     companion object {
