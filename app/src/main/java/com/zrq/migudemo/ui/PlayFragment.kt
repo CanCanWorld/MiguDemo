@@ -28,6 +28,7 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
 
     override fun initData() {
         initAnimation()
+        Log.d(TAG, "initData: ")
     }
 
     override fun initEvent() {
