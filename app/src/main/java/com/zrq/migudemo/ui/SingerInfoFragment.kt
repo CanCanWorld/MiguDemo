@@ -3,17 +3,24 @@ package com.zrq.migudemo.ui
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
-import com.zrq.migudemo.bean.SearchSong
+import com.zrq.migudemo.adapter.SongOfSingerAdapter
+import com.zrq.migudemo.bean.Singer
+import com.zrq.migudemo.bean.SongOfSinger
 import com.zrq.migudemo.databinding.FragmentSingerInfoBinding
-import com.zrq.migudemo.util.Constants
+import com.zrq.migudemo.interfaces.OnItemClickListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SINGER_INFO
+import com.zrq.migudemo.util.Constants.SINGER_SONG_LIST
 import okhttp3.*
 import java.io.IOException
 
-class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>() {
+class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClickListener {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -21,19 +28,26 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>() {
         return FragmentSingerInfoBinding.inflate(inflater, container, false)
     }
 
+    private val listSong = ArrayList<SongOfSinger.SongListBean>()
+    private lateinit var adapter: SongOfSingerAdapter
+
     override fun initData() {
+        adapter = SongOfSingerAdapter(requireContext(), listSong, this)
+        mBinding.rvSongOfSinger.adapter = adapter
+        mBinding.rvSongOfSinger.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun initEvent() {
         mainModel.artistId.observe(this) {
             if (it != null) {
-                loadSinger()
+                loadSinger(it)
+                loadSongOfSinger(it)
             }
         }
     }
 
-    private fun loadSinger() {
-        val url = "$BASE_URL$SINGER_INFO?key=$key"
+    private fun loadSinger(artistId: String) {
+        val url = "$BASE_URL$SINGER_INFO?artistId=$artistId"
         Log.d(TAG, "initEvent: $url")
         val request: Request = Request.Builder()
             .url(url)
@@ -49,12 +63,10 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>() {
                 if (response.body != null) {
                     val json = response.body!!.string()
                     Log.d(TAG, "onResponse: $json")
-                    val song = Gson().fromJson(json, SearchSong::class.java)
-                    if (song != null && song.musics != null) {
-                        listSong.clear()
-                        listSong.addAll(song.musics)
+                    val singer = Gson().fromJson(json, Singer::class.java)
+                    if (singer != null && singer.data != null) {
                         requireActivity().runOnUiThread {
-                            songAdapter.notifyDataSetChanged()
+                            refreshSingerInfo(singer.data)
                         }
                     }
                 }
@@ -62,7 +74,51 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>() {
         })
     }
 
+    private fun loadSongOfSinger(artistId: String) {
+        val url = "$BASE_URL$SINGER_SONG_LIST?artistId=$artistId"
+        Log.d(TAG, "initEvent: $url")
+        val request: Request = Request.Builder()
+            .url(url)
+            .get()
+            .build()
+        OkHttpClient().newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d(TAG, "onFailure: ")
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onResponse(call: Call, response: Response) {
+                if (response.body != null) {
+                    val json = response.body!!.string()
+                    Log.d(TAG, "onResponse: $json")
+                    val songOfSinger = Gson().fromJson(json, SongOfSinger::class.java)
+                    if (songOfSinger != null && songOfSinger.songList != null) {
+                        listSong.clear()
+                        listSong.addAll(songOfSinger.songList)
+                        requireActivity().runOnUiThread {
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    private fun refreshSingerInfo(data: Singer.DataDTO) {
+        mBinding.apply {
+            tvSinger.text = data.anotherName
+            tvIntro.text = data.intro
+            Glide.with(this@SingerInfoFragment)
+                .load(data.localArtistPicL)
+                .into(ivHead)
+        }
+    }
+
     companion object {
         const val TAG = "SingerInfoFragment"
+    }
+
+    override fun onItemClick(view: View, position: Int) {
+        Toast.makeText(requireContext(), "click$position", Toast.LENGTH_SHORT).show()
     }
 }

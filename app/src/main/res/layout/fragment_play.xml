@@ -8,6 +8,13 @@
     tools:context=".ui.PlayFragment">
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +30,7 @@
         android:backgroundTint="@color/play_bg"
         android:src="@drawable/ic_baseline_expand_more_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline1"
         app:tint="@color/white" />
 
     <LinearLayout
@@ -37,7 +44,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/ib_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/guideline1">
 
         <TextView
             android:id="@+id/tv_song_name"
@@ -62,14 +69,14 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:text="@string/singer_name"
-                android:textColor="@color/grey"
+                android:textColor="@color/grey_"
                 android:textSize="11sp" />
 
             <ImageView
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                app:tint="@color/grey" />
+                app:tint="@color/grey_" />
         </LinearLayout>
     </LinearLayout>
 
@@ -81,85 +88,88 @@
         android:backgroundTint="@color/play_bg"
         android:src="@drawable/ic_baseline_share_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline1"
         app:tint="@color/white" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_album"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:layout_centerInParent="true"
-        android:src="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/circle_img" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_song_info" >
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <TextView
+        android:id="@+id/tv_lyric"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        android:padding="30dp"
+        android:text="@string/lyric"
+        android:textColor="@color/white_"/>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/tv_play_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/start_time"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/guideline2">-->
 
-        <SeekBar
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:progressBackgroundTint="@color/white_"
-            android:progressTint="@color/progress_"
-            android:thumbTint="@color/white" />
+<!--    </LinearLayout>-->
 
-        <TextView
-            android:id="@+id/tv_play_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/end_time"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout3"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">-->
 
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/tv_play_start"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:text="@string/start_time"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="12sp" />-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+<!--        <SeekBar-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:progressBackgroundTint="@color/white_"-->
+<!--            android:progressTint="@color/progress_"-->
+<!--            android:thumbTint="@color/white" />-->
 
-        <Button
-            android:id="@+id/btn_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_play_end"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:text="@string/end_time"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="12sp" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_start"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Start" />-->
+
+<!--    </LinearLayout>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/drawable/shape_bottom_dialog.xml" value="0.259" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/drawable/shape_tab_indicator.xml" value="0.259" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/drawable/shape_top_line_box.xml" value="0.175" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/dialog_bottom_play_list.xml" value="0.1349206349206349" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_play.xml" value="0.33697916666666666" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_search.xml" value="0.33" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_search_result.xml" value="0.27661393758016245" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_singer_info.xml" value="0.33" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/item_list_song.xml" value="0.33" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/item_search_song.xml" value="0.33697916666666666" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/item_song_list.xml" value="0.27575887131252674" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/item_song_of_singer.xml" value="0.33" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.251" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_expand_more_24.xml" value="0.251" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.251" />

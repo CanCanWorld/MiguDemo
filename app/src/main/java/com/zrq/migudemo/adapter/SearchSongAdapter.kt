@@ -11,7 +11,7 @@ import com.zrq.migudemo.interfaces.OnItemClickListener
 class SearchSongAdapter(
     private val context: Context,
     private val list: ArrayList<SearchSong.MusicsDTO>,
-    var onItemClickListener: OnItemClickListener
+    private var onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<VH<ItemSearchSongBinding>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH<ItemSearchSongBinding> {
         val mBinding =

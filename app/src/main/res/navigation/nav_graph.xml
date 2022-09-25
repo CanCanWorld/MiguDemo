@@ -18,10 +18,10 @@
     <action
         android:id="@+id/action_global_playFragment"
         app:destination="@id/playFragment"
-        app:enterAnim="@anim/from_right"
-        app:exitAnim="@anim/to_left"
-        app:popEnterAnim="@anim/from_left"
-        app:popExitAnim="@anim/to_right" />
+        app:enterAnim="@anim/from_bottom"
+        app:exitAnim="@anim/to_top"
+        app:popEnterAnim="@anim/from_top"
+        app:popExitAnim="@anim/to_bottom" />
     <fragment
         android:id="@+id/singerInfoFragment"
         android:name="com.zrq.migudemo.ui.SingerInfoFragment"
@@ -34,4 +34,9 @@
         app:exitAnim="@anim/to_left"
         app:popEnterAnim="@anim/from_left"
         app:popExitAnim="@anim/to_right" />
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.zrq.migudemo.ui.SearchResultFragment"
+        android:label="fragment_search_result"
+        tools:layout="@layout/fragment_search_result" />
 </navigation>

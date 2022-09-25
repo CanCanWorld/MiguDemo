@@ -23,7 +23,7 @@ class SearchSingerAdapter(
         holder.binding.apply {
             tvSinger.text = list[position].title
             Glide.with(context)
-                .load(list[position].artistPicL)
+                .load(list[position].artistPicS)
                 .into(ivHead)
             root.setOnClickListener {
                 listener.onItemClick(it, position)
