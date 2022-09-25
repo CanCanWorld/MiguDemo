@@ -16,8 +16,11 @@ import com.zrq.migudemo.adapter.SearchSingerAdapter
 import com.zrq.migudemo.adapter.SearchSongAdapter
 import com.zrq.migudemo.bean.SearchSinger
 import com.zrq.migudemo.bean.SearchSong
+import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentSearchResultBinding
+import com.zrq.migudemo.db.SongDatabaseHelper
 import com.zrq.migudemo.interfaces.OnItemClickListener
+import com.zrq.migudemo.interfaces.OnSongMoreClickListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SEARCH
 import com.zrq.migudemo.util.Constants.TYPE_SINGER
@@ -27,7 +30,7 @@ import java.io.IOException
 
 class SearchResultFragment(
     var type: Int
-) : BaseFragment<FragmentSearchResultBinding>() {
+) : BaseFragment<FragmentSearchResultBinding>(), OnSongMoreClickListener {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -41,15 +44,17 @@ class SearchResultFragment(
     private val listSinger = ArrayList<SearchSinger.ArtistsDTO>()
     private var key = ""
     private var offset = 1
+    private lateinit var songDaoImpl: SongDaoImpl
 
     override fun initData() {
+        songDaoImpl = SongDaoImpl(SongDatabaseHelper(requireContext()))
         songAdapter = SearchSongAdapter(requireContext(), listSong, object : OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
                 mainModel.playList.clear()
                 mainModel.playList.addAll(listSong)
                 mainModel.getOnSongChangeListener().onSongChange(listSong[position])
             }
-        })
+        }, this)
         singerAdapter =
             SearchSingerAdapter(requireContext(), listSinger, object : OnItemClickListener {
                 override fun onItemClick(view: View, position: Int) {
@@ -149,5 +154,9 @@ class SearchResultFragment(
     companion object {
         const val TAG = "SearchResultFragment"
         fun newInstance(type: Int) = SearchResultFragment(type)
+    }
+
+    override fun onSongMoreClick(song: SearchSong.MusicsDTO, position:Int) {
+        songDaoImpl.addSong(song)
     }
 }

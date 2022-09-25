@@ -82,6 +82,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnSongChangeListen
                 Navigation.findNavController(requireActivity(), R.id.fragment_container)
                     .navigate(R.id.action_global_playFragment)
             }
+
+            ibBack.setOnClickListener {
+                Navigation.findNavController(requireActivity(), R.id.fragment_container)
+                    .navigate(R.id.action_global_loveFragment)
+            }
         }
 
         mainModel.apply {
