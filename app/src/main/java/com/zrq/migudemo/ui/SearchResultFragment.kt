@@ -59,7 +59,7 @@ class SearchResultFragment(
             SearchSingerAdapter(requireContext(), listSinger, object : OnItemClickListener {
                 override fun onItemClick(view: View, position: Int) {
                     mainModel.artistId.postValue(listSinger[position].id)
-                    Navigation.findNavController(requireActivity(), R.id.fragment_container)
+                    Navigation.findNavController(requireActivity(), R.id.fragment_home_container)
                         .navigate(R.id.action_global_singerInfoFragment)
                 }
 

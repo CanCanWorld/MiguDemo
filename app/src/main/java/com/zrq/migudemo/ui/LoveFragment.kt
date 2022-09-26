@@ -40,11 +40,9 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
 
     override fun initEvent() {
         mBinding.apply {
-            ibAdd.setOnClickListener {
-                Navigation.findNavController(requireActivity(), R.id.fragment_container)
-                    .navigate(R.id.action_global_searchFragment)
-            }
         }
+
+
     }
 
     companion object {
@@ -52,6 +50,9 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     }
 
     override fun onItemClick(view: View, position: Int) {
+        mainModel.playList.clear()
+        mainModel.playList.addAll(listSong)
+        mainModel.getOnSongChangeListener().onSongChange(listSong[position])
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -59,5 +60,6 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
         songDaoImpl.deleteSong(song.id.toInt())
         listSong.removeAt(position)
         adapter.notifyDataSetChanged()
+
     }
 }

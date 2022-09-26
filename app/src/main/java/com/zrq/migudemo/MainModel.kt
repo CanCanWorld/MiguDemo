@@ -8,8 +8,6 @@ import com.google.gson.Gson
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.bean.Song
 import com.zrq.migudemo.interfaces.OnSongChangeListener
-import com.zrq.migudemo.ui.PlayFragment
-import com.zrq.migudemo.util.Constants
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SONG
 import okhttp3.*
@@ -17,7 +15,7 @@ import java.io.IOException
 
 class MainModel : ViewModel() {
 
-    var playSong : SearchSong.MusicsDTO? = null
+    var playSong: SearchSong.MusicsDTO? = null
 
     var nowPlaying = MutableLiveData<SearchSong.MusicsDTO>()
 
@@ -41,9 +39,8 @@ class MainModel : ViewModel() {
         this.onSongChangeListener = onItemClickListener
     }
 
-
     fun playThis(position: Int) {
-        if (position > 0) {
+        if (position >= 0) {
             playPosition = position
             Log.d(TAG, "playThis: $position")
             val cid = playList[position].copyrightId

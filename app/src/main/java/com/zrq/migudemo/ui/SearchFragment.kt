@@ -29,8 +29,7 @@ import com.zrq.migudemo.util.Constants.TYPE_SINGER
 import com.zrq.migudemo.util.Constants.TYPE_SONG
 import com.zrq.migudemo.util.Constants.TYPE_SONG_LIST
 
-class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnSongChangeListener,
-    OnItemClickListener, OnSongDeleteListener {
+class SearchFragment : BaseFragment<FragmentSearchBinding>(){
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -39,19 +38,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnSongChangeListen
     }
 
     lateinit var searchAdapter: SearchResultAdapter
-    lateinit var listAdapter: ListSongAdapter
-    private lateinit var animation: ValueAnimator
-    private lateinit var listDialog: BottomSheetDialog
-    private lateinit var listView: View
-    var list = ArrayList<SearchSong.MusicsDTO>()
 
     override fun initData() {
 
         initTabLayout()
 
-        initListDialog()
-
-        initAnimation()
     }
 
     override fun initEvent() {
@@ -74,49 +65,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnSongChangeListen
                 etSearch.setText("")
             }
 
-            ibList.setOnClickListener {
-                listDialog.show()
-            }
 
-            llPlayBar.setOnClickListener {
-                Navigation.findNavController(requireActivity(), R.id.fragment_container)
-                    .navigate(R.id.action_global_playFragment)
-            }
-
-            ibBack.setOnClickListener {
-                Navigation.findNavController(requireActivity(), R.id.fragment_container)
-                    .navigate(R.id.action_global_loveFragment)
-            }
         }
 
-        mainModel.apply {
-            setOnSongChangeListener(this@SearchFragment)
-            nowPlaying.observe(this@SearchFragment) {
-                if (it != null) {
-                    playSong = it
-                    refreshPlayBar(it)
-                }
-            }
-        }
     }
 
-    private fun initListDialog() {
-        listView = layoutInflater.inflate(R.layout.dialog_bottom_play_list, null)
-        listDialog = BottomSheetDialog(requireContext())
-        listDialog.setContentView(listView)
-        listAdapter = ListSongAdapter(requireContext(), list, this, this)
-        listView.findViewById<RecyclerView>(R.id.rv_song_list).apply {
-            adapter = listAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
-        refreshListDialog()
-    }
-
-    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-    private fun refreshListDialog() {
-        listAdapter.notifyDataSetChanged()
-        listView.findViewById<TextView>(R.id.tv_list_size).text = "(${list.size})"
-    }
 
     private fun initTabLayout() {
         val fragmentList = ArrayList<SearchResultFragment>()
@@ -138,57 +91,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), OnSongChangeListen
         mBinding.tabLayout.setupWithViewPager(mBinding.viewPager)
     }
 
-    private fun initAnimation() {
-        animation = ObjectAnimator.ofFloat(mBinding.ivAlbum, "rotation", .0f, 360.0f)
-        animation.apply {
-            duration = 6000
-            interpolator = LinearInterpolator()
-            repeatCount = -1
-            repeatMode = ObjectAnimator.RESTART
-        }
-    }
 
-    private fun refreshPlayBar(song: SearchSong.MusicsDTO) {
-        mBinding.apply {
-            llPlayBar.visibility = View.VISIBLE
-            ivAlbum.visibility = View.VISIBLE
-            tvSongName.text = song.songName
-            tvSinger.text = song.singerName
-            Glide.with(this@SearchFragment)
-                .load(song.cover)
-                .into(ivAlbum)
-            animation.start()
-        }
-    }
 
     companion object {
         const val TAG = "SearchFragment"
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (mainModel.playSong != null) {
-            refreshPlayBar(mainModel.playSong!!)
-        }
-    }
-
-    override fun onSongChange(song: SearchSong.MusicsDTO) {
-        list.clear()
-        list.addAll(mainModel.playList)
-        mainModel.playThis(list.indexOf(song))
-        mainModel.playSong = song
-        refreshListDialog()
-        refreshPlayBar(song)
-    }
-
-    override fun onItemClick(view: View, position: Int) {
-    }
-
-    override fun onSongDelete(song: SearchSong.MusicsDTO) {
-        list.remove(song)
-        mainModel.playList.clear()
-        mainModel.playList.addAll(list)
-        refreshListDialog()
     }
 
 }
