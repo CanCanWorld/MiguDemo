@@ -3,59 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loveFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.zrq.migudemo.ui.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        android:id="@+id/homeFragment"
+        android:name="com.zrq.migudemo.ui.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+
     <fragment
         android:id="@+id/playFragment"
         android:name="com.zrq.migudemo.ui.PlayFragment"
         android:label="fragment_play"
         tools:layout="@layout/fragment_play" />
-    <action
-        android:id="@+id/action_global_playFragment"
-        app:destination="@id/playFragment"
-        app:enterAnim="@anim/from_bottom"
-        app:exitAnim="@anim/to_top"
-        app:popEnterAnim="@anim/from_top"
-        app:popExitAnim="@anim/to_bottom" />
-    <fragment
-        android:id="@+id/singerInfoFragment"
-        android:name="com.zrq.migudemo.ui.SingerInfoFragment"
-        android:label="fragment_singer_info"
-        tools:layout="@layout/fragment_singer_info" />
-    <action
-        android:id="@+id/action_global_singerInfoFragment"
-        app:destination="@id/singerInfoFragment"
-        app:enterAnim="@anim/from_right"
-        app:exitAnim="@anim/to_left"
-        app:popEnterAnim="@anim/from_left"
-        app:popExitAnim="@anim/to_right" />
-    <fragment
-        android:id="@+id/searchResultFragment"
-        android:name="com.zrq.migudemo.ui.SearchResultFragment"
-        android:label="fragment_search_result"
-        tools:layout="@layout/fragment_search_result" />
-    <fragment
-        android:id="@+id/loveFragment"
-        android:name="com.zrq.migudemo.ui.LoveFragment"
-        android:label="fragment_love"
-        tools:layout="@layout/fragment_love" />
-    <action
-        android:id="@+id/action_global_loveFragment"
-        app:destination="@id/loveFragment"
-        app:enterAnim="@anim/from_left"
-        app:exitAnim="@anim/to_right"
-        app:popEnterAnim="@anim/from_right"
-        app:popExitAnim="@anim/to_left" />
-    <action
-        android:id="@+id/action_global_searchFragment"
-        app:destination="@id/searchFragment"
-        app:enterAnim="@anim/from_right"
-        app:exitAnim="@anim/to_left"
-        app:popEnterAnim="@anim/from_left"
-        app:popExitAnim="@anim/to_right" />
 </navigation>
