@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.ItemSearchSongBinding
 import com.zrq.migudemo.interfaces.OnItemClickListener
-import com.zrq.migudemo.interfaces.OnSongMoreClickListener
+import com.zrq.migudemo.interfaces.OnItemLongClickListener
 
 class SearchSongAdapter(
     private val context: Context,
     private val list: ArrayList<SearchSong.MusicsDTO>,
     private var onItemClickListener: OnItemClickListener,
-    private var onSongMoreClickListener: OnSongMoreClickListener
+    private var onItemLongClickListener: OnItemLongClickListener
 ) : RecyclerView.Adapter<VH<ItemSearchSongBinding>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH<ItemSearchSongBinding> {
         val mBinding =
@@ -26,11 +26,12 @@ class SearchSongAdapter(
             tvSong.text = list[position].songName
             tvSinger.text = list[position].singerName
             tvAlbum.text = list[position].albumName
-            ibMore.setOnClickListener {
-                onSongMoreClickListener.onSongMoreClick(list[position], position)
-            }
             itemRoot.setOnClickListener {
                 onItemClickListener.onItemClick(it, position)
+            }
+            itemRoot.setOnLongClickListener {
+                onItemLongClickListener.onItemLongClick(it, position)
+                true
             }
         }
     }

@@ -14,4 +14,6 @@
     <string name="now_playing">当前播放</string>
     <string name="list_size">(0)</string>
     <string name="lyric">歌词</string>
+    <string name="love">收藏</string>
+    <string name="not_love">取消收藏</string>
 </resources>

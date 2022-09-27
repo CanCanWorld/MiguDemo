@@ -2,17 +2,22 @@ package com.zrq.migudemo.ui
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.SongOfSingerAdapter
 import com.zrq.migudemo.bean.Singer
 import com.zrq.migudemo.bean.SongOfSinger
+import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentSingerInfoBinding
+import com.zrq.migudemo.db.SongDatabaseHelper
 import com.zrq.migudemo.interfaces.OnItemClickListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SINGER_INFO
@@ -30,6 +35,8 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClic
 
     private val listSong = ArrayList<SongOfSinger.SongListBean>()
     private lateinit var adapter: SongOfSingerAdapter
+    private var offset = 1
+    private var artistId = ""
 
     override fun initData() {
         adapter = SongOfSingerAdapter(requireContext(), listSong, this)
@@ -40,13 +47,24 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClic
     override fun initEvent() {
         mainModel.artistId.observe(this) {
             if (it != null) {
-                loadSinger(it)
-                loadSongOfSinger(it)
+                artistId = it
+                loadSinger()
+                loadSongOfSinger()
+            }
+        }
+        mBinding.apply {
+            refreshLayout.setOnRefreshListener {
+                offset = 1
+                loadSongOfSinger()
+            }
+            refreshLayout.setOnLoadMoreListener {
+                offset++
+                loadSongOfSinger()
             }
         }
     }
 
-    private fun loadSinger(artistId: String) {
+    private fun loadSinger() {
         val url = "$BASE_URL$SINGER_INFO?artistId=$artistId"
         Log.d(TAG, "initEvent: $url")
         val request: Request = Request.Builder()
@@ -74,8 +92,8 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClic
         })
     }
 
-    private fun loadSongOfSinger(artistId: String) {
-        val url = "$BASE_URL$SINGER_SONG_LIST?artistId=$artistId"
+    private fun loadSongOfSinger() {
+        val url = "$BASE_URL$SINGER_SONG_LIST?artistId=$artistId&offset=$offset"
         Log.d(TAG, "initEvent: $url")
         val request: Request = Request.Builder()
             .url(url)
@@ -93,10 +111,13 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClic
                     Log.d(TAG, "onResponse: $json")
                     val songOfSinger = Gson().fromJson(json, SongOfSinger::class.java)
                     if (songOfSinger != null && songOfSinger.songList != null) {
-                        listSong.clear()
+                        if (offset == 1)
+                            listSong.clear()
                         listSong.addAll(songOfSinger.songList)
                         requireActivity().runOnUiThread {
                             adapter.notifyDataSetChanged()
+                            mBinding.refreshLayout.finishRefresh()
+                            mBinding.refreshLayout.finishLoadMore()
                         }
                     }
                 }

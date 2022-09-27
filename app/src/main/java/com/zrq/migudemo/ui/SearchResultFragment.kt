@@ -2,9 +2,8 @@ package com.zrq.migudemo.ui
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +19,7 @@ import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentSearchResultBinding
 import com.zrq.migudemo.db.SongDatabaseHelper
 import com.zrq.migudemo.interfaces.OnItemClickListener
-import com.zrq.migudemo.interfaces.OnSongMoreClickListener
+import com.zrq.migudemo.interfaces.OnItemLongClickListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SEARCH
 import com.zrq.migudemo.util.Constants.TYPE_SINGER
@@ -30,7 +29,7 @@ import java.io.IOException
 
 class SearchResultFragment(
     var type: Int
-) : BaseFragment<FragmentSearchResultBinding>(), OnSongMoreClickListener {
+) : BaseFragment<FragmentSearchResultBinding>() {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -52,9 +51,13 @@ class SearchResultFragment(
             override fun onItemClick(view: View, position: Int) {
                 mainModel.playList.clear()
                 mainModel.playList.addAll(listSong)
-                mainModel.getOnSongChangeListener().onSongChange(listSong[position])
+                mainModel.onSongChangeListener?.onSongChange(listSong[position])
             }
-        }, this)
+        }, object : OnItemLongClickListener {
+            override fun onItemLongClick(view: View, position: Int) {
+                showPopMenu(view, position)
+            }
+        })
         singerAdapter =
             SearchSingerAdapter(requireContext(), listSinger, object : OnItemClickListener {
                 override fun onItemClick(view: View, position: Int) {
@@ -128,8 +131,6 @@ class SearchResultFragment(
                                     listSong.addAll(song.musics)
                                     requireActivity().runOnUiThread {
                                         songAdapter.notifyDataSetChanged()
-                                        mBinding.refreshLayout.finishRefresh()
-                                        mBinding.refreshLayout.finishLoadMore()
                                     }
                                 }
                             }
@@ -140,6 +141,8 @@ class SearchResultFragment(
                                     listSinger.addAll(singer.artists)
                                     requireActivity().runOnUiThread {
                                         singerAdapter.notifyDataSetChanged()
+                                        mBinding.refreshLayout.finishRefresh()
+                                        mBinding.refreshLayout.finishLoadMore()
                                     }
                                 }
                             }
@@ -156,7 +159,19 @@ class SearchResultFragment(
         fun newInstance(type: Int) = SearchResultFragment(type)
     }
 
-    override fun onSongMoreClick(song: SearchSong.MusicsDTO, position:Int) {
-        songDaoImpl.addSong(song)
+    @SuppressLint("RtlHardcoded", "NotifyDataSetChanged")
+    private fun showPopMenu(view: View, position: Int) {
+        val popupMenu = PopupMenu(requireContext(), view, Gravity.RIGHT)
+        popupMenu.menuInflater.inflate(R.menu.menu_song_long_click, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_love -> {
+                    songDaoImpl.addSong(listSong[position])
+                }
+                else -> {}
+            }
+            true
+        }
+        popupMenu.show()
     }
 }

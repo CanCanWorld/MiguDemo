@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.bean.Song
+import com.zrq.migudemo.interfaces.OnElapsedTimeListener
 import com.zrq.migudemo.interfaces.OnSongChangeListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SONG
@@ -27,16 +28,28 @@ class MainModel : ViewModel() {
 
     val artistId = MutableLiveData<String>()
 
+    val duration = MutableLiveData<Int>()
+
+    val elapsedTime = MutableLiveData<Int>()
+
     private var mediaPlayer = MediaPlayer()
 
-    private lateinit var onSongChangeListener: OnSongChangeListener
 
-    fun getOnSongChangeListener(): OnSongChangeListener {
-        return onSongChangeListener
-    }
+    var onSongChangeListener: OnSongChangeListener? = null
 
-    fun setOnSongChangeListener(onItemClickListener: OnSongChangeListener) {
-        this.onSongChangeListener = onItemClickListener
+    var onElapsedTimeListener: OnElapsedTimeListener? = null
+
+    init {
+        mediaPlayer.setOnCompletionListener {
+            if (playPosition == playList.size - 1) {
+                playPosition = 0
+            } else {
+                playPosition++
+            }
+            playThis(playPosition)
+            nowPlaying.postValue(playList[playPosition])
+        }
+
     }
 
     fun playThis(position: Int) {
@@ -59,7 +72,6 @@ class MainModel : ViewModel() {
                     override fun onResponse(call: Call, response: Response) {
                         if (response.body != null) {
                             val json = response.body!!.string()
-                            Log.d(TAG, "onResponse: $json")
                             val song = Gson().fromJson(json, Song::class.java)
                             if (song != null) {
                                 play(song)
@@ -77,25 +89,41 @@ class MainModel : ViewModel() {
             mediaPlayer.setDataSource(song.data.playUrl)
             mediaPlayer.prepareAsync()
             mediaPlayer.setOnPreparedListener {
-                mediaPlayer.start()
-            }
-            mediaPlayer.setOnCompletionListener {
-                if (playPosition == playList.size - 1) {
-                    playPosition = 0
-                } else {
-                    playPosition++
-                }
-                playThis(playPosition)
-                nowPlaying.postValue(playList[playPosition])
+                start()
+                duration.postValue(mediaPlayer.duration)
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
     }
 
+    fun start() {
+        mediaPlayer.start()
+        flag = true
+        ProgressThread().start()
+    }
+
     fun pause() {
-        mediaPlayer.stop()
-        mediaPlayer.release()
+        mediaPlayer.pause()
+        flag = false
+    }
+
+    fun getDuration(): Int {
+        return mediaPlayer.duration
+    }
+
+    var flag = true
+
+    inner class ProgressThread : Thread() {
+        override fun run() {
+            super.run()
+            while (flag) {
+                if (mediaPlayer.isPlaying) {
+                    sleep(100)
+                    onElapsedTimeListener?.onElapsedTime(mediaPlayer.currentPosition)
+                }
+            }
+        }
     }
 
     companion object {

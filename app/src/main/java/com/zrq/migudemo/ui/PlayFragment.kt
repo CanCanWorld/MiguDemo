@@ -1,24 +1,23 @@
 package com.zrq.migudemo.ui
 
-import android.animation.ValueAnimator
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.navigation.Navigation
 import com.google.gson.Gson
-import com.zrq.migudemo.MainModel
 import com.zrq.migudemo.R
 import com.zrq.migudemo.bean.Lyric
 import com.zrq.migudemo.bean.SearchSong
-import com.zrq.migudemo.bean.Song
 import com.zrq.migudemo.databinding.FragmentPlayBinding
-import com.zrq.migudemo.util.Constants
+import com.zrq.migudemo.interfaces.OnElapsedTimeListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.LYRIC
+import com.zrq.migudemo.util.Utils
 import okhttp3.*
 import java.io.IOException
 
-class PlayFragment : BaseFragment<FragmentPlayBinding>() {
+class PlayFragment : BaseFragment<FragmentPlayBinding>(), OnElapsedTimeListener {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -36,13 +35,49 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
     }
 
     override fun initEvent() {
+
         mBinding.apply {
             ibBack.setOnClickListener {
                 Navigation.findNavController(requireActivity(), R.id.fragment_container)
                     .popBackStack()
             }
 
+            cbPlay.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    mBinding.cbPlay.setButtonDrawable(R.drawable.ic_baseline_pause_circle_outline_24)
+                    mainModel.start()
+                } else {
+                    mBinding.cbPlay.setButtonDrawable(R.drawable.ic_baseline_play_circle_outline_24)
+                    mainModel.pause()
+                }
+            }
+
+            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    TODO("Not yet implemented")
+                }
+            })
         }
+
+        mainModel.duration.observe(this) {
+            if (it != null) {
+                mBinding.tvPlayEnd.text = Utils.formatDuration(it)
+            }
+        }
+
+        mainModel.onElapsedTimeListener = this
     }
 
     private fun refresh() {
@@ -50,11 +85,11 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
             tvSongName.text = nowPlaying.songName
             tvSinger.text = nowPlaying.singerName
         }
-        loadLyric(nowPlaying)
+        loadLyric()
     }
 
-    private fun loadLyric(song: SearchSong.MusicsDTO) {
-        val cid = song.copyrightId
+    private fun loadLyric() {
+        val cid = nowPlaying.copyrightId
         if (cid.isNotEmpty()) {
             val url = "${BASE_URL}${LYRIC}?cid=$cid"
             Log.d(TAG, "loadLyric: $url")
@@ -70,7 +105,6 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
                 override fun onResponse(call: Call, response: Response) {
                     if (response.body != null) {
                         val json = response.body!!.string()
-                        Log.d(TAG, "onResponse: $json")
                         val lyric = Gson().fromJson(json, Lyric::class.java)
                         if (lyric != null && lyric.lyric != null) {
                             requireActivity().runOnUiThread {
@@ -83,12 +117,16 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
     companion object {
         const val TAG = "PlayFragment"
+    }
+
+    override fun onElapsedTime(elapsedTime: Int) {
+        Log.d(TAG, "onSeekChange: $elapsedTime")
+        requireActivity().runOnUiThread {
+            mBinding.tvPlayStart.text = Utils.formatDuration(elapsedTime)
+            mBinding.seekBar.progress = 100 * elapsedTime / mainModel.getDuration()
+        }
     }
 
 }

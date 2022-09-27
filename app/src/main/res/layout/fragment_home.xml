@@ -34,15 +34,15 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.87" />
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_home_container"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@+id/guideline1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navGraph="@navigation/nav_home" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_home_container"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_home" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_album"
@@ -119,6 +119,7 @@
         android:layout_height="48dp"
         android:button="@drawable/ic_baseline_search_24"
         android:buttonTint="@color/red_et"
+        android:checked="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"

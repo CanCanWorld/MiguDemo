@@ -1,23 +1,20 @@
 package com.zrq.migudemo.ui
 
 import android.annotation.SuppressLint
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.Navigation
+import android.view.*
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.LoveSongAdapter
 import com.zrq.migudemo.bean.SearchSong
-import com.zrq.migudemo.bean.SongOfSinger
 import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentLoveBinding
 import com.zrq.migudemo.db.SongDatabaseHelper
 import com.zrq.migudemo.interfaces.OnItemClickListener
-import com.zrq.migudemo.interfaces.OnSongMoreClickListener
+import com.zrq.migudemo.interfaces.OnItemLongClickListener
 
 class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
-    OnSongMoreClickListener {
+    OnItemLongClickListener {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -40,8 +37,9 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
 
     override fun initEvent() {
         mBinding.apply {
-        }
 
+
+        }
 
     }
 
@@ -52,14 +50,28 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     override fun onItemClick(view: View, position: Int) {
         mainModel.playList.clear()
         mainModel.playList.addAll(listSong)
-        mainModel.getOnSongChangeListener().onSongChange(listSong[position])
+        mainModel.onSongChangeListener?.onSongChange(listSong[position])
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onSongMoreClick(song: SearchSong.MusicsDTO, position: Int) {
-        songDaoImpl.deleteSong(song.id.toInt())
-        listSong.removeAt(position)
-        adapter.notifyDataSetChanged()
+    override fun onItemLongClick(view: View, position: Int) {
+        showPopMenu(view, position)
+    }
 
+    @SuppressLint("RtlHardcoded", "NotifyDataSetChanged")
+    private fun showPopMenu(view: View, position: Int) {
+        val popupMenu = PopupMenu(requireContext(), view, Gravity.RIGHT)
+        popupMenu.menuInflater.inflate(R.menu.menu_love_long_click, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_not_love -> {
+                    songDaoImpl.deleteSong(listSong[position].id.toInt())
+                    listSong.removeAt(position)
+                    adapter.notifyDataSetChanged()
+                }
+                else -> {}
+            }
+            true
+        }
+        popupMenu.show()
     }
 }

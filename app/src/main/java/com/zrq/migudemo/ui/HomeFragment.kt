@@ -74,7 +74,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
 
             mainModel.apply {
-                setOnSongChangeListener(this@HomeFragment)
+                onSongChangeListener = this@HomeFragment
                 nowPlaying.observe(this@HomeFragment) {
                     if (it != null) {
                         playSong = it
@@ -153,7 +153,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     override fun onItemClick(view: View, position: Int) {
         mainModel.playList.clear()
         mainModel.playList.addAll(list)
-        mainModel.getOnSongChangeListener().onSongChange(list[position])
+        mainModel.onSongChangeListener?.onSongChange(list[position])
     }
 
     companion object {
