@@ -128,6 +128,7 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>(), OnElapsedTimeListener 
             mBinding.tvPlayStart.text = Utils.formatDuration(elapsedTime)
             mBinding.seekBar.progress = 100 * elapsedTime / mainModel.getDuration()
 
+            //test
         }
     }
 
