@@ -115,6 +115,10 @@ class SearchResultFragment(
             OkHttpClient().newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.d(TAG, "onFailure: ")
+                    requireActivity().runOnUiThread {
+                        mBinding.refreshLayout.finishRefresh()
+                        mBinding.refreshLayout.finishLoadMore()
+                    }
                 }
 
                 @SuppressLint("NotifyDataSetChanged")
@@ -131,6 +135,8 @@ class SearchResultFragment(
                                     listSong.addAll(song.musics)
                                     requireActivity().runOnUiThread {
                                         songAdapter.notifyDataSetChanged()
+                                        mBinding.refreshLayout.finishRefresh()
+                                        mBinding.refreshLayout.finishLoadMore()
                                     }
                                 }
                             }
