@@ -58,15 +58,16 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>(), OnElapsedTimeListener 
                     progress: Int,
                     fromUser: Boolean
                 ) {
-
+                    if (fromUser) {
+                        Log.d(TAG, "onProgressChanged: $progress")
+                        mainModel.onSeekbarClickListener?.onSeekbarClick(progress)
+                    }
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    TODO("Not yet implemented")
                 }
 
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    TODO("Not yet implemented")
                 }
             })
         }
@@ -126,6 +127,7 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>(), OnElapsedTimeListener 
         requireActivity().runOnUiThread {
             mBinding.tvPlayStart.text = Utils.formatDuration(elapsedTime)
             mBinding.seekBar.progress = 100 * elapsedTime / mainModel.getDuration()
+
         }
     }
 

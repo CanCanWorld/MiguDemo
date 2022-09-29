@@ -8,13 +8,14 @@ import com.google.gson.Gson
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.bean.Song
 import com.zrq.migudemo.interfaces.OnElapsedTimeListener
+import com.zrq.migudemo.interfaces.OnSeekbarClickListener
 import com.zrq.migudemo.interfaces.OnSongChangeListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SONG
 import okhttp3.*
 import java.io.IOException
 
-class MainModel : ViewModel() {
+class MainModel : ViewModel(), OnSeekbarClickListener {
 
     var playSong: SearchSong.MusicsDTO? = null
 
@@ -30,14 +31,13 @@ class MainModel : ViewModel() {
 
     val duration = MutableLiveData<Int>()
 
-    val elapsedTime = MutableLiveData<Int>()
-
     private var mediaPlayer = MediaPlayer()
-
 
     var onSongChangeListener: OnSongChangeListener? = null
 
     var onElapsedTimeListener: OnElapsedTimeListener? = null
+
+    var onSeekbarClickListener: OnSeekbarClickListener? = null
 
     init {
         mediaPlayer.setOnCompletionListener {
@@ -50,6 +50,7 @@ class MainModel : ViewModel() {
             nowPlaying.postValue(playList[playPosition])
         }
 
+        onSeekbarClickListener = this
     }
 
     fun playThis(position: Int) {
@@ -128,5 +129,9 @@ class MainModel : ViewModel() {
 
     companion object {
         const val TAG = "MainModel"
+    }
+
+    override fun onSeekbarClick(position: Int) {
+        mediaPlayer.seekTo(getDuration() * position / 100)
     }
 }
