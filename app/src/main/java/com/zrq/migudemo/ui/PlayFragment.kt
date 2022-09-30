@@ -10,14 +10,13 @@ import com.zrq.migudemo.R
 import com.zrq.migudemo.bean.Lyric
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.FragmentPlayBinding
-import com.zrq.migudemo.interfaces.OnElapsedTimeListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.LYRIC
 import com.zrq.migudemo.util.Utils
 import okhttp3.*
 import java.io.IOException
 
-class PlayFragment : BaseFragment<FragmentPlayBinding>(), OnElapsedTimeListener {
+class PlayFragment : BaseFragment<FragmentPlayBinding>() {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -78,7 +77,18 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>(), OnElapsedTimeListener 
             }
         }
 
-        mainModel.onElapsedTimeListener = this
+        mainModel.elapsedTime.observe(this) {
+            if (it != null) {
+                mBinding.tvPlayStart.text = Utils.formatDuration(it)
+                mBinding.seekBar.progress = 100 * it / mainModel.getDuration()
+            }
+        }
+
+        mainModel.isPause.observe(this) {
+            if (it != null) {
+                mBinding.cbPlay.isChecked = !it
+            }
+        }
     }
 
     private fun refresh() {
@@ -120,16 +130,6 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>(), OnElapsedTimeListener 
 
     companion object {
         const val TAG = "PlayFragment"
-    }
-
-    override fun onElapsedTime(elapsedTime: Int) {
-        Log.d(TAG, "onSeekChange: $elapsedTime")
-        requireActivity().runOnUiThread {
-            mBinding.tvPlayStart.text = Utils.formatDuration(elapsedTime)
-            mBinding.seekBar.progress = 100 * elapsedTime / mainModel.getDuration()
-
-            //test
-        }
     }
 
 }

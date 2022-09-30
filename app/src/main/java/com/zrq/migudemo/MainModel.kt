@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.bean.Song
-import com.zrq.migudemo.interfaces.OnElapsedTimeListener
 import com.zrq.migudemo.interfaces.OnSeekbarClickListener
 import com.zrq.migudemo.interfaces.OnSongChangeListener
 import com.zrq.migudemo.util.Constants.BASE_URL
@@ -31,11 +30,13 @@ class MainModel : ViewModel(), OnSeekbarClickListener {
 
     val duration = MutableLiveData<Int>()
 
+    val elapsedTime = MutableLiveData<Int>()
+
+    val isPause = MutableLiveData<Boolean>()
+
     private var mediaPlayer = MediaPlayer()
 
     var onSongChangeListener: OnSongChangeListener? = null
-
-    var onElapsedTimeListener: OnElapsedTimeListener? = null
 
     var onSeekbarClickListener: OnSeekbarClickListener? = null
 
@@ -91,6 +92,7 @@ class MainModel : ViewModel(), OnSeekbarClickListener {
             mediaPlayer.prepareAsync()
             mediaPlayer.setOnPreparedListener {
                 start()
+                isPause.postValue(false)
                 duration.postValue(mediaPlayer.duration)
             }
         } catch (e: IOException) {
@@ -100,13 +102,20 @@ class MainModel : ViewModel(), OnSeekbarClickListener {
 
     fun start() {
         mediaPlayer.start()
+        isPause.postValue(false)
         flag = true
         ProgressThread().start()
     }
 
     fun pause() {
         mediaPlayer.pause()
+        isPause.postValue(true)
         flag = false
+    }
+
+    fun destroy(){
+        mediaPlayer.release()
+        isPause.postValue(true)
     }
 
     fun getDuration(): Int {
@@ -121,7 +130,7 @@ class MainModel : ViewModel(), OnSeekbarClickListener {
             while (flag) {
                 if (mediaPlayer.isPlaying) {
                     sleep(100)
-                    onElapsedTimeListener?.onElapsedTime(mediaPlayer.currentPosition)
+                    elapsedTime.postValue(mediaPlayer.currentPosition)
                 }
             }
         }
