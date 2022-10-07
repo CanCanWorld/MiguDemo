@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/activity_main.xml" value="0.27661393758016245" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_home.xml" value="0.13473552686380674" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_play.xml" value="0.33" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_search.xml" value="0.25" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.251" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_expand_more_24.xml" value="0.251" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.251" />

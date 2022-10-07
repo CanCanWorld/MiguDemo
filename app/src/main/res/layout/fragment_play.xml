@@ -141,6 +141,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:max="1000"
             android:progressBackgroundTint="@color/white_"
             android:progressTint="@color/progress_"
             android:thumbTint="@color/white" />
@@ -160,17 +161,44 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
+        android:paddingHorizontal="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <CheckBox
             android:id="@+id/cb_play"
-            android:checked="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:button="@drawable/ic_baseline_pause_circle_outline_24"
             android:buttonTint="@color/white_"
+            android:checked="true"
+            android:scaleX="2"
+            android:scaleY="2" />
+
+        <CheckBox
+            android:id="@+id/cb_pre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="50dp"
+            android:button="@drawable/ic_baseline_skip_previous_24"
+            android:buttonTint="@color/white_"
+            android:checked="true"
+            android:scaleX="2"
+            android:scaleY="2" />
+
+        <CheckBox
+            android:id="@+id/cb_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="50dp"
+            android:button="@drawable/ic_baseline_skip_next_24"
+            android:buttonTint="@color/white_"
+            android:checked="true"
             android:scaleX="2"
             android:scaleY="2" />
 

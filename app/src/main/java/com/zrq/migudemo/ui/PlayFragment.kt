@@ -1,5 +1,7 @@
 package com.zrq.migudemo.ui
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,13 +12,15 @@ import com.zrq.migudemo.R
 import com.zrq.migudemo.bean.Lyric
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.FragmentPlayBinding
+import com.zrq.migudemo.interfaces.IPlayerControl
+import com.zrq.migudemo.interfaces.IPlayerViewControl
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.LYRIC
 import com.zrq.migudemo.util.Utils
 import okhttp3.*
 import java.io.IOException
 
-class PlayFragment : BaseFragment<FragmentPlayBinding>() {
+class PlayFragment : BaseFragment<FragmentPlayBinding>(), IPlayerViewControl {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -26,6 +30,8 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
 
     private lateinit var nowPlaying: SearchSong.MusicsDTO
 
+    private lateinit var mPlayerViewControl: IPlayerViewControl
+
     override fun initData() {
         if (mainModel.playSong != null) {
             nowPlaying = mainModel.playSong!!
@@ -34,6 +40,10 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
     }
 
     override fun initEvent() {
+
+        mPlayerViewControl = this
+
+        mainModel.playerControl?.registerViewControl(mPlayerViewControl)
 
         mBinding.apply {
             ibBack.setOnClickListener {
@@ -51,6 +61,16 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
                 }
             }
 
+            cbPre.setOnCheckedChangeListener { _, _ ->
+                Log.d(TAG, "cbPre: ")
+                mainModel.pre()
+            }
+
+            cbNext.setOnCheckedChangeListener { _, _ ->
+                Log.d(TAG, "cbNext: ")
+                mainModel.next()
+            }
+
             seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
@@ -59,7 +79,7 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
                 ) {
                     if (fromUser) {
                         Log.d(TAG, "onProgressChanged: $progress")
-                        mainModel.onSeekbarClickListener?.onSeekbarClick(progress)
+                        mainModel.playerControl?.seekTo(progress)
                     }
                 }
 
@@ -74,13 +94,6 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
         mainModel.duration.observe(this) {
             if (it != null) {
                 mBinding.tvPlayEnd.text = Utils.formatDuration(it)
-            }
-        }
-
-        mainModel.elapsedTime.observe(this) {
-            if (it != null) {
-                mBinding.tvPlayStart.text = Utils.formatDuration(it)
-                mBinding.seekBar.progress = 100 * it / mainModel.getDuration()
             }
         }
 
@@ -126,6 +139,24 @@ class PlayFragment : BaseFragment<FragmentPlayBinding>() {
                 }
             })
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mBinding.cbPlay.isChecked = true
+    }
+
+    override fun onSeekChange(progress: Int, elapsedTime: Int) {
+        Handler(Looper.getMainLooper()).post(Runnable {
+            mBinding.seekBar.progress = progress
+            mBinding.tvPlayStart.text = Utils.formatDuration(elapsedTime)
+        })
+    }
+
+    override fun onSongChange(duration: Int) {
+        Handler(Looper.getMainLooper()).post(Runnable {
+            mBinding.tvPlayEnd.text = Utils.formatDuration(duration)
+        })
     }
 
     companion object {

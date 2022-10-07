@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.zrq.migudemo.MainModel
+import com.zrq.migudemo.interfaces.IPlayerControl
 
 abstract class BaseFragment<T : ViewBinding> : Fragment() {
 

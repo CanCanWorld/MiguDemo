@@ -48,8 +48,7 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     }
 
     override fun onItemClick(view: View, position: Int) {
-        mainModel.playList.clear()
-        mainModel.playList.addAll(listSong)
+        mainModel.playerControl?.setList(listSong)
         mainModel.onSongChangeListener?.onSongChange(listSong[position])
     }
 

@@ -136,7 +136,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     override fun onSongChange(song: SearchSong.MusicsDTO) {
         list.clear()
-        list.addAll(mainModel.playList)
+        list.addAll(mainModel.getList()!!)
         mainModel.playThis(list.indexOf(song))
         mainModel.playSong = song
         refreshListDialog()
@@ -145,14 +145,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     override fun onSongDelete(song: SearchSong.MusicsDTO) {
         list.remove(song)
-        mainModel.playList.clear()
-        mainModel.playList.addAll(list)
+        mainModel.playerControl?.setList(list)
         refreshListDialog()
     }
 
     override fun onItemClick(view: View, position: Int) {
-        mainModel.playList.clear()
-        mainModel.playList.addAll(list)
+//        mainModel.playList.clear()
+//        mainModel.playList.addAll(list)
+        //todo
+        mainModel.playerControl?.setList(list)
         mainModel.onSongChangeListener?.onSongChange(list[position])
     }
 
