@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.PlayBarFragment">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_album"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginHorizontal="20dp"
+        android:elevation="4dp"
+        android:src="@color/grey__"
+        app:shapeAppearance="@style/circle_img" />
+
+    <RelativeLayout
+        android:id="@+id/ll_play_bar"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey__" />
+
+        <TextView
+            android:id="@+id/tv_song_name"
+            style="@style/tv_song_name"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="95dp" />
+
+        <TextView
+            android:id="@+id/split"
+            style="@style/tv_singer"
+            android:paddingHorizontal="5dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_song_name"
+            android:text="@string/split" />
+
+        <TextView
+            android:id="@+id/tv_singer"
+            style="@style/tv_singer"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/split" />
+
+        <ImageButton
+            android:id="@+id/ib_list"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@color/white"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_playlist_play_24"
+            app:tint="@color/grey" />
+    </RelativeLayout>
+
+</RelativeLayout>
