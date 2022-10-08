@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/activity_main.xml" value="0.27661393758016245" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_play.xml" value="0.25" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_play_bar.xml" value="0.27661393758016245" />
+        <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/fragment_search.xml" value="0.25" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.251" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_expand_more_24.xml" value="0.251" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.251" />
@@ -12,10 +17,9 @@
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/shape_tab_indicatir.xml" value="0.1255" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/activity_main.xml" value="0.365036231884058" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/activity_main222.xml" value="0.2916666666666667" />
-        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_love.xml" value="0.4432291666666667" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_play.xml" value="0.33" />
-        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_play_bar.xml" value="0.25" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_search.xml" value="0.27247191011235955" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_search_result.xml" value="0.4330543933054393" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_singer_info.xml" value="0.4432291666666667" />
