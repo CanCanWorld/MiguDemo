@@ -13,8 +13,10 @@ import com.scwang.smart.refresh.header.ClassicsHeader
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.SearchSingerAdapter
 import com.zrq.migudemo.adapter.SearchSongAdapter
+import com.zrq.migudemo.adapter.SearchSongListAdapter
 import com.zrq.migudemo.bean.SearchSinger
 import com.zrq.migudemo.bean.SearchSong
+import com.zrq.migudemo.bean.SearchSongList
 import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentSearchResultBinding
 import com.zrq.migudemo.db.SongDatabaseHelper
@@ -24,6 +26,7 @@ import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SEARCH
 import com.zrq.migudemo.util.Constants.TYPE_SINGER
 import com.zrq.migudemo.util.Constants.TYPE_SONG
+import com.zrq.migudemo.util.Constants.TYPE_SONG_LIST
 import okhttp3.*
 import java.io.IOException
 
@@ -39,8 +42,10 @@ class SearchResultFragment(
 
     private lateinit var songAdapter: SearchSongAdapter
     private lateinit var singerAdapter: SearchSingerAdapter
+    private lateinit var songListAdapter: SearchSongListAdapter
     private val listSong = ArrayList<SearchSong.MusicsDTO>()
     private val listSinger = ArrayList<SearchSinger.ArtistsDTO>()
+    private val listSongList = ArrayList<SearchSongList.SongListsBean>()
     private var key = ""
     private var offset = 1
     private lateinit var songDaoImpl: SongDaoImpl
@@ -50,7 +55,7 @@ class SearchResultFragment(
         songAdapter = SearchSongAdapter(requireContext(), listSong, object : OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
                 mainModel.playerControl?.setList(listSong)
-                mainModel.onSongChangeListener?.onSongChange(listSong[position])
+                mainModel.onSongChangeListener?.onSongChange(position)
             }
         }, object : OnItemLongClickListener {
             override fun onItemLongClick(view: View, position: Int) {
@@ -66,12 +71,21 @@ class SearchResultFragment(
                 }
 
             })
+        songListAdapter =
+            SearchSongListAdapter(requireContext(), listSongList, object : OnItemClickListener {
+                override fun onItemClick(view: View, position: Int) {
+
+                }
+            })
         when (type) {
             TYPE_SONG -> {
                 mBinding.recyclerView.adapter = songAdapter
             }
             TYPE_SINGER -> {
                 mBinding.recyclerView.adapter = singerAdapter
+            }
+            TYPE_SONG_LIST -> {
+                mBinding.recyclerView.adapter = songListAdapter
             }
             else -> {}
         }
@@ -142,10 +156,24 @@ class SearchResultFragment(
                             TYPE_SINGER -> {
                                 val singer = Gson().fromJson(json, SearchSinger::class.java)
                                 if (singer != null && singer.artists != null) {
-                                    listSinger.clear()
+                                    if (offset == 1)
+                                        listSinger.clear()
                                     listSinger.addAll(singer.artists)
                                     requireActivity().runOnUiThread {
                                         singerAdapter.notifyDataSetChanged()
+                                        mBinding.refreshLayout.finishRefresh()
+                                        mBinding.refreshLayout.finishLoadMore()
+                                    }
+                                }
+                            }
+                            TYPE_SONG_LIST -> {
+                                val songList = Gson().fromJson(json, SearchSongList::class.java)
+                                if (songList != null && songList.songLists != null) {
+                                    if (offset == 1)
+                                        listSongList.clear()
+                                    listSongList.addAll(songList.songLists)
+                                    requireActivity().runOnUiThread {
+                                        songListAdapter.notifyDataSetChanged()
                                         mBinding.refreshLayout.finishRefresh()
                                         mBinding.refreshLayout.finishLoadMore()
                                     }

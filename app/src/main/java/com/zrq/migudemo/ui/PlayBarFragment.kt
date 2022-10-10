@@ -2,6 +2,7 @@ package com.zrq.migudemo.ui
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.zrq.migudemo.R
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.FragmentPlayBarBinding
+import com.zrq.migudemo.interfaces.IPlayerViewControl
+import com.zrq.migudemo.view.VisualizeView.CIRCLE
 
 class PlayBarFragment
     (var position: Int) : BaseFragment<FragmentPlayBarBinding>() {
@@ -22,6 +25,7 @@ class PlayBarFragment
     }
 
     private lateinit var animation: ValueAnimator
+    private lateinit var mPlayerViewControl: IPlayerViewControl
 
     override fun initData() {
         initAnimation()
@@ -31,17 +35,15 @@ class PlayBarFragment
         mBinding.apply {
 
             llPlayBar.setOnClickListener {
-                Navigation.findNavController(requireActivity(), R.id.fragment_container)
-                    .navigate(R.id.playFragment)
+//                Navigation.findNavController(requireActivity(), R.id.fragment_container)
+//                    .navigate(R.id.playFragment)
             }
 
         }
 
         mainModel.apply {
-//            onSongChangeListener = this@PlayBarFragment
             nowPlaying.observe(this@PlayBarFragment) {
                 if (it != null) {
-                    playSong = it
                     refreshPlayBar(it)
                 }
             }
@@ -74,12 +76,6 @@ class PlayBarFragment
 
     override fun onResume() {
         super.onResume()
-//        if (mainModel.playSong != null) {
-//            refreshPlayBar(mainModel.playSong!!)
-//        }
-        mainModel.playThis(position)
-        if (mainModel.getList() != null)
-            mainModel.nowPlaying.postValue(mainModel.getList()!![position])
     }
 
     companion object {

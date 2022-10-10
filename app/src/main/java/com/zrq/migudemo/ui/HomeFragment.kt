@@ -1,24 +1,27 @@
 package com.zrq.migudemo.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.ListSongAdapter
 import com.zrq.migudemo.adapter.PlayBarAdapter
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.FragmentHomeBinding
+import com.zrq.migudemo.interfaces.IPlayerViewControl
 import com.zrq.migudemo.interfaces.OnItemClickListener
 import com.zrq.migudemo.interfaces.OnSongChangeListener
 import com.zrq.migudemo.interfaces.OnSongDeleteListener
+import com.zrq.migudemo.view.VisualizeView
+import kotlin.collections.ArrayList
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     OnSongChangeListener, OnItemClickListener, OnSongDeleteListener {
@@ -31,22 +34,60 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     private lateinit var listDialog: BottomSheetDialog
     private lateinit var listView: View
-    lateinit var listAdapter: ListSongAdapter
-    var list = ArrayList<SearchSong.MusicsDTO>()
+    private lateinit var listAdapter: ListSongAdapter
+    private var list = ArrayList<SearchSong.MusicsDTO>()
     lateinit var adapter: PlayBarAdapter
+    private lateinit var mPlayerViewControl: IPlayerViewControl
+    private var isPause = false
 
     override fun initData() {
+        Log.d(TAG, "initData: ")
         initListDialog()
         adapter = PlayBarAdapter(requireActivity(), list)
         mBinding.viewPager2.adapter = adapter
     }
 
     override fun initEvent() {
-        mainModel.apply {
-            onSongChangeListener = this@HomeFragment
+        mPlayerViewControl = object : IPlayerViewControl {
+
+            override fun onSeekChange(progress: Int, elapsedTime: Int) {
+                Log.d(TAG, "onSeekChange: $progress")
+            }
+
+            override fun onSongPlayOver(position: Int) {
+                Log.d(TAG, "onSongPlayOver: ")
+                mBinding.viewPager2.setCurrentItem(position, true)
+            }
+
+            override fun onVisualizeView(mode: FloatArray) {
+                mBinding.visualizeView.setColor(resources.getColor(R.color.red_et))
+                mBinding.visualizeView.setData(mode)
+                mBinding.visualizeView.setMode(VisualizeView.SINGLE)
+            }
+        }
+
+        mainModel.registerViewControl(mPlayerViewControl)
+
+        mainModel.onSongChangeListener = this@HomeFragment
+
+        mainModel.isPause.observe(this@HomeFragment) {
+            if (it != null) {
+                isPause = it
+                if (it) {
+                    mBinding.ibPlayOrPause.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                    mainModel.playerControl?.pause()
+                } else {
+                    mBinding.ibPlayOrPause.setImageResource(R.drawable.ic_baseline_pause_24)
+                    mainModel.playerControl?.play()
+                }
+            }
         }
 
         mBinding.apply {
+
+            ibPlayOrPause.setOnClickListener {
+                mainModel.isPause.postValue(!isPause)
+            }
 
             ibList.setOnClickListener {
                 listDialog.show()
@@ -68,7 +109,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                 }
             }
 
-
+            viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    Log.d(TAG, "onPageSelected: $position")
+                    mainModel.nowPlaying.postValue(list[position])
+                    mainModel.playThis(position)
+                }
+            })
         }
     }
 
@@ -91,31 +139,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onSongChange(song: SearchSong.MusicsDTO) {
+    override fun onSongChange(position: Int) {
+        mBinding.ibList.visibility = View.VISIBLE
+        mBinding.ibPlayOrPause.visibility = View.VISIBLE
         list.clear()
         list.addAll(mainModel.getList()!!)
-        mainModel.playThis(list.indexOf(song))
-        mainModel.playSong = song
+        mainModel.setList(list)
+        mBinding.viewPager2.setCurrentItem(position, false)
         refreshListDialog()
         adapter.notifyDataSetChanged()
-//        refreshPlayBar(song)
-
     }
 
-
-    override fun onSongDelete(song: SearchSong.MusicsDTO) {
-        list.remove(song)
-        mainModel.playerControl?.setList(list)
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onSongDelete(position: Int) {
+        list.removeAt(position)
+        mainModel.setList(list)
         refreshListDialog()
+        adapter.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onItemClick(view: View, position: Int) {
-//        mainModel.playList.clear()
-//        mainModel.playList.addAll(list)
-        //todo
-        Toast.makeText(requireContext(), "$position", Toast.LENGTH_SHORT).show()
-        mainModel.playerControl?.setList(list)
-        mainModel.onSongChangeListener?.onSongChange(list[position])
+        mBinding.viewPager2.setCurrentItem(position, false)
+        adapter.notifyDataSetChanged()
     }
 
     companion object {

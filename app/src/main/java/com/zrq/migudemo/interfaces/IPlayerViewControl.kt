@@ -4,6 +4,7 @@ interface IPlayerViewControl {
 
     fun onSeekChange(progress: Int, elapsedTime: Int)
 
-    fun onSongChange(duration: Int)
+    fun onSongPlayOver(position: Int)
 
+    fun onVisualizeView(mode: FloatArray)
 }

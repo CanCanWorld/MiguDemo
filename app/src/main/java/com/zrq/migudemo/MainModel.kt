@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.interfaces.IPlayerControl
+import com.zrq.migudemo.interfaces.IPlayerViewControl
 import com.zrq.migudemo.interfaces.OnSongChangeListener
 
 class MainModel : ViewModel() {
-
-    var playSong: SearchSong.MusicsDTO? = null
 
     var nowPlaying = MutableLiveData<SearchSong.MusicsDTO>()
 
@@ -29,6 +28,23 @@ class MainModel : ViewModel() {
         return playerControl?.getList()
     }
 
+    fun setList(list: ArrayList<SearchSong.MusicsDTO>) {
+        playerControl?.setList(list)
+    }
+
+    fun registerViewControl(iPlayerViewControl: IPlayerViewControl) {
+        Thread {
+            for (i in 1..10)
+                if (playerControl != null) {
+                    playerControl?.registerViewControl(iPlayerViewControl)
+                    break
+                } else {
+                    Thread.sleep(200)
+                }
+        }.start()
+
+    }
+
     fun playThis(position: Int) {
         playerControl?.setNowPlayingPosition(position)
         playerControl?.resetMediaPlayer()
@@ -38,14 +54,11 @@ class MainModel : ViewModel() {
     fun start() {
         playerControl?.play()
         isPause.postValue(false)
-        flag = true
-//        ProgressThread().start()
     }
 
     fun pause() {
         playerControl?.pause()
         isPause.postValue(true)
-        flag = false
     }
 
     fun next() {
@@ -59,12 +72,6 @@ class MainModel : ViewModel() {
     fun destroy() {
         isPause.postValue(true)
     }
-
-//    fun getDuration(): Int {
-//        return mediaPlayer.duration
-//    }
-
-    var flag = true
 
     companion object {
         const val TAG = "MainModel"

@@ -29,7 +29,7 @@ class ListSongAdapter(
                 onItemClickListener.onItemClick(it, position)
             }
             ibDelete.setOnClickListener {
-                onSongDeleteListener.onSongDelete(list[position])
+                onSongDeleteListener.onSongDelete(position)
             }
         }
     }

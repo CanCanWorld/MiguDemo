@@ -12,6 +12,7 @@
     <color name="grey__">#64D1D1D1</color>
     <color name="play_bg">#737B7D</color>
     <color name="transparent">#00ffffff</color>
+    <color name="transparent_">#00FFFFFE</color>
     <color name="white_">#D0FFFFFF</color>
     <color name="white__">#B5FFFFFF</color>
     <color name="white___">#81FFFFFF</color>

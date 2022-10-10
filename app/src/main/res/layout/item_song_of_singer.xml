@@ -1,69 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="5dp"
-    app:contentPadding="5dp">
-    <LinearLayout
-        android:layout_width="match_parent"
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="2dp"
+    android:background="@drawable/shape_song_item"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/tv_number"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="4dp"
-        android:layout_marginVertical="2dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="10dp"
+        android:text="@string/_1"
+        android:textColor="@color/grey"
+        android:textSize="17sp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_number"
-            android:text="@string/_1"
-            android:textColor="@color/grey"
-            android:padding="15dp"
-            android:textSize="17sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:id="@+id/tv_song"
+            style="@style/tv_song_name"
+            android:padding="2dp" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_song"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text="@string/song_name"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tv_singer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text="@string/singer_name"
-                android:textColor="@color/grey_"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/ib_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:padding="15dp"
-            android:src="@drawable/ic_baseline_more_vert_24"
-            app:tint="@color/grey_" />
+        <TextView
+            android:id="@+id/tv_singer"
+            style="@style/tv_singer"
+            android:padding="2dp" />
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/ib_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparent_"
+        android:padding="15dp"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        app:tint="@color/grey_" />
+
+</LinearLayout>

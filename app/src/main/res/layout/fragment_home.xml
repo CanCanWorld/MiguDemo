@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red"
+    android:background="@color/white_"
     tools:context=".ui.HomeFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -45,6 +45,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_home" />
 
+    <com.zrq.migudemo.view.VisualizeView
+        android:id="@+id/visualizeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/guideline1"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager2"
         android:layout_width="match_parent"
@@ -63,6 +70,20 @@
         android:src="@drawable/ic_baseline_playlist_play_24"
         app:layout_constraintBottom_toTopOf="@+id/guideline1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:tint="@color/grey" />
+
+    <ImageButton
+        android:id="@+id/ib_play_or_pause"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:backgroundTint="@color/white"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_baseline_pause_24"
+        app:layout_constraintBottom_toTopOf="@+id/guideline1"
+        app:layout_constraintEnd_toStartOf="@+id/ib_list"
         app:layout_constraintTop_toTopOf="@+id/guideline4"
         app:tint="@color/grey" />
 

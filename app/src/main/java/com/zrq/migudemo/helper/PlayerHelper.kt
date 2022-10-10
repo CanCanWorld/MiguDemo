@@ -1,6 +1,8 @@
 package com.zrq.migudemo.helper
 
 import android.media.MediaPlayer
+import android.media.audiofx.Visualizer
+import android.media.audiofx.Visualizer.OnDataCaptureListener
 import android.os.Binder
 import android.util.Log
 import com.google.gson.Gson
@@ -13,7 +15,8 @@ import com.zrq.migudemo.util.Constants
 import okhttp3.*
 import java.io.IOException
 import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.math.abs
+import kotlin.math.hypot
 
 object PlayerHelper : Binder(), IPlayerControl {
 
@@ -31,17 +34,68 @@ object PlayerHelper : Binder(), IPlayerControl {
 
     private var timer: Timer? = null
 
+    private var visualizer: Visualizer? = null
+
     init {
         mMediaPlayer.setOnCompletionListener {
-            if (nowPlayingPosition == playList.size - 1) {
-                nowPlayingPosition = 0
-            } else {
-                nowPlayingPosition++
-            }
             Log.d(TAG, "setOnCompletionListener: ")
-//            resetMediaPlayer()
+//            next()
+            when (playList.size) {
+                1 -> {
+                    nowPlayingPosition = 0
+                }
+                else -> {
+                    if (nowPlayingPosition == playList.size - 1) {
+                        nowPlayingPosition = 0
+                    } else {
+                        nowPlayingPosition++
+                    }
+                }
+            }
+            mViewControl?.onSongPlayOver(nowPlayingPosition)
+            Log.d(TAG, "nowPlayingPosition: $nowPlayingPosition")
         }
+        // 因为直接切歌会发生错误，所以增加错误监听器。返回true。就不会回调onCompletion方法了。
+        mMediaPlayer.setOnErrorListener { _, _, _ -> true }
+
     }
+
+    private fun initVisualizer() {
+        visualizer?.release()
+        visualizer = Visualizer(mMediaPlayer.audioSessionId)
+        visualizer!!.setDataCaptureListener(object : OnDataCaptureListener {
+            override fun onWaveFormDataCapture(
+                visualizer: Visualizer,
+                bytes: ByteArray,
+                samplingRate: Int
+            ) {
+            }
+
+            override fun onFftDataCapture(
+                visualizer: Visualizer,
+                fft: ByteArray,
+                samplingRate: Int
+            ) {
+                Log.d(TAG, "onFftDataCapture: $fft")
+                val model = FloatArray(fft.size / 2 + 1)
+                model[0] = abs(fft[1].toFloat())
+                var j = 1
+                var i = 2
+                while (i < fft.size / 2) {
+                    model[j] = hypot(fft[i].toDouble(), fft[i + 1].toDouble()).toFloat()
+                    i += 2
+                    j++
+                    model[j] = abs(fft[j].toFloat())
+                }
+                //model即为最终用于绘制的数据
+                mViewControl?.onVisualizeView(model)
+            }
+        }, Visualizer.getMaxCaptureRate() / 2, false, true)
+
+        visualizer!!.enabled = true
+
+    }
+
 
     override fun registerViewControl(viewControl: IPlayerViewControl) {
         mViewControl = viewControl
@@ -55,11 +109,9 @@ object PlayerHelper : Binder(), IPlayerControl {
         Log.d(TAG, "play: ")
         mMediaPlayer.setOnPreparedListener {
             mMediaPlayer.start()
-            mViewControl?.onSongChange(mMediaPlayer.duration)
+            initVisualizer()
         }
         mMediaPlayer.start()
-        startTimer()
-        mViewControl?.onSongChange(mMediaPlayer.duration)
     }
 
     override fun pause() {
@@ -103,9 +155,9 @@ object PlayerHelper : Binder(), IPlayerControl {
         resetMediaPlayer()
     }
 
-    override fun seekTo(progress: Int) {
+    override fun seekTo(seek: Int) {
         if (mMediaPlayer.duration != 0) {
-            val playerSeek = mMediaPlayer.duration * progress / 1000
+            val playerSeek = mMediaPlayer.duration * seek / 1000
             mMediaPlayer.seekTo(playerSeek)
         }
     }
@@ -131,9 +183,9 @@ object PlayerHelper : Binder(), IPlayerControl {
                         val json = response.body!!.string()
                         val song = Gson().fromJson(json, Song::class.java)
                         if (song != null && song.data != null && song.data.playUrl != null) {
+                            mMediaPlayer.reset()
                             mMediaPlayer.setDataSource(song.data.playUrl)
                             mMediaPlayer.prepareAsync()
-//                            mMediaPlayer.prepare()
                         }
                     }
                 }

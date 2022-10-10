@@ -1,17 +1,27 @@
 package com.zrq.migudemo.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.LoveSongAdapter
+import com.zrq.migudemo.bean.Picture
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentLoveBinding
 import com.zrq.migudemo.db.SongDatabaseHelper
 import com.zrq.migudemo.interfaces.OnItemClickListener
 import com.zrq.migudemo.interfaces.OnItemLongClickListener
+import com.zrq.migudemo.util.Constants
+import okhttp3.*
+import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.random.Random
 
 class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     OnItemLongClickListener {
@@ -25,8 +35,10 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     private lateinit var songDaoImpl: SongDaoImpl
     private lateinit var adapter: LoveSongAdapter
     private val listSong = ArrayList<SearchSong.MusicsDTO>()
+    private var random = 0
 
     override fun initData() {
+        load()
         songDaoImpl = SongDaoImpl(SongDatabaseHelper(requireContext()))
         listSong.clear()
         listSong.addAll(songDaoImpl.listAllSongs())
@@ -49,7 +61,7 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
 
     override fun onItemClick(view: View, position: Int) {
         mainModel.playerControl?.setList(listSong)
-        mainModel.onSongChangeListener?.onSongChange(listSong[position])
+        mainModel.onSongChangeListener?.onSongChange(position)
     }
 
     override fun onItemLongClick(view: View, position: Int) {
@@ -72,5 +84,35 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
             true
         }
         popupMenu.show()
+    }
+
+    private fun load() {
+        random = Random(Date().time).nextInt(1000)
+        val url = Constants.getPicByCategory(Constants.ANIM, 1, random)
+        Log.d(HomeFragment.TAG, "load: $url")
+        val request: Request = Request.Builder()
+            .url(url)
+            .method("GET", null)
+            .build()
+
+        OkHttpClient().newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d(HomeFragment.TAG, "onFailure: ")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+                    val string = response.body?.string()
+                    val result = Gson().fromJson(string, Picture::class.java)
+                    if (result != null && result.res != null && result.res.vertical != null) {
+                        requireActivity().runOnUiThread {
+                            Glide.with(requireActivity())
+                                .load(result.res.vertical[0].img)
+                                .into(mBinding.ivLoveBg)
+                        }
+                    }
+                }
+            }
+        })
     }
 }

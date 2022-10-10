@@ -17,16 +17,11 @@
 
     <RelativeLayout
         android:id="@+id/ll_play_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey__" />
+        android:background="@color/transparent">
 
         <TextView
             android:id="@+id/tv_song_name"
@@ -37,9 +32,9 @@
         <TextView
             android:id="@+id/split"
             style="@style/tv_singer"
-            android:paddingHorizontal="5dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/tv_song_name"
+            android:paddingHorizontal="5dp"
             android:text="@string/split" />
 
         <TextView

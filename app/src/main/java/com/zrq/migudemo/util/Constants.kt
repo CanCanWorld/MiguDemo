@@ -42,4 +42,16 @@ object Constants {
     const val FIELD_COVER = "cover"
 
     const val FIELD_CID = "cid"
+
+    const val PIC_BASE_URL = "http://service.picasso.adesk.com"
+
+    private const val GET_PIC = "/v1/vertical/category/"
+
+    const val GET_CATEGORY = "/v1/vertical/category?adult=false&first=1"
+
+    const val ANIM = "4e4d610cdf714d2966000003"
+
+    fun getPicByCategory(category: String, limit: Int, num: Int): String {
+        return "$PIC_BASE_URL$GET_PIC$category/vertical?limit=$limit&skip=${num * limit}&adult=false&first=0&order=hot\""
+    }
 }
