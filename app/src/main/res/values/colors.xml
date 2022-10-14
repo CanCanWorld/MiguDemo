@@ -20,5 +20,6 @@
     <color name="progress_">#ECFFFFFF</color>
     <color name="red">#D53C36</color>
     <color name="red_tab">#D63D35</color>
-    <color name="red_et">#EA9F9C</color>
+    <color name="pink">#EA9F9C</color>
+    <color name="pink_">#A4EA9F9C</color>
 </resources>

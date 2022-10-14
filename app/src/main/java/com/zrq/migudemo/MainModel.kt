@@ -1,6 +1,5 @@
 package com.zrq.migudemo
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zrq.migudemo.bean.SearchSong
@@ -15,8 +14,6 @@ class MainModel : ViewModel() {
     val key = MutableLiveData<String>()
 
     val artistId = MutableLiveData<String>()
-
-    val duration = MutableLiveData<Int>()
 
     val isPause = MutableLiveData<Boolean>()
 

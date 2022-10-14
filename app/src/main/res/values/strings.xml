@@ -16,4 +16,15 @@
     <string name="lyric">歌词</string>
     <string name="love">收藏</string>
     <string name="not_love">取消收藏</string>
+    <string name="home">首页</string>
+    <string name="reward">打赏</string>
+    <string name="message">消息</string>
+    <string name="setting">设置</string>
+    <string name="background">壁纸</string>
+    <string name="exit">退出</string>
+    <string name="erCiYuan">二次元</string>
+    <string name="girl">美女</string>
+    <string name="animal">动物</string>
+    <string name="theme">主题</string>
+    <string name="color">配色</string>
 </resources>

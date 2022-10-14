@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.zrq.migudemo.bean.SearchSong
-import com.zrq.migudemo.bean.Song
 import com.zrq.migudemo.ui.PlayBarFragment
 
 class PlayBarAdapter(

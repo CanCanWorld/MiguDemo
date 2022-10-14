@@ -8,12 +8,13 @@ import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.ItemSearchSongBinding
 import com.zrq.migudemo.interfaces.OnItemClickListener
 import com.zrq.migudemo.interfaces.OnItemLongClickListener
+import com.zrq.migudemo.interfaces.OnMoreClickListener
 
 class SearchSongAdapter(
     private val context: Context,
     private val list: ArrayList<SearchSong.MusicsDTO>,
-    private var onItemClickListener: OnItemClickListener,
-    private var onItemLongClickListener: OnItemLongClickListener
+    private val onItemClickListener: OnItemClickListener,
+    private val onMoreClickListener: OnMoreClickListener
 ) : RecyclerView.Adapter<VH<ItemSearchSongBinding>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH<ItemSearchSongBinding> {
         val mBinding =
@@ -29,9 +30,8 @@ class SearchSongAdapter(
             itemRoot.setOnClickListener {
                 onItemClickListener.onItemClick(it, position)
             }
-            itemRoot.setOnLongClickListener {
-                onItemLongClickListener.onItemLongClick(it, position)
-                true
+            ibMore.setOnClickListener {
+                onMoreClickListener.onMoreClick(it, position)
             }
         }
     }

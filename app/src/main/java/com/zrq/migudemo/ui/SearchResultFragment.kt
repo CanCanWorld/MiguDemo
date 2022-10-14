@@ -21,7 +21,7 @@ import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentSearchResultBinding
 import com.zrq.migudemo.db.SongDatabaseHelper
 import com.zrq.migudemo.interfaces.OnItemClickListener
-import com.zrq.migudemo.interfaces.OnItemLongClickListener
+import com.zrq.migudemo.interfaces.OnMoreClickListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SEARCH
 import com.zrq.migudemo.util.Constants.TYPE_SINGER
@@ -57,8 +57,8 @@ class SearchResultFragment(
                 mainModel.playerControl?.setList(listSong)
                 mainModel.onSongChangeListener?.onSongChange(position)
             }
-        }, object : OnItemLongClickListener {
-            override fun onItemLongClick(view: View, position: Int) {
+        }, object : OnMoreClickListener {
+            override fun onMoreClick(view: View, position: Int) {
                 showPopMenu(view, position)
             }
         })

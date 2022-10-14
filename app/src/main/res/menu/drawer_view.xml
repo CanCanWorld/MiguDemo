@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/ic_baseline_home_24"
+            android:id="@+id/item_home"
+            android:title="@string/home" />
+        <item
+            android:icon="@drawable/ic_baseline_photo_24"
+            android:id="@+id/item_background"
+            android:title="@string/background" />
+        <item
+            android:icon="@drawable/ic_baseline_palette_24"
+            android:id="@+id/item_color"
+            android:title="@string/color" />
+        <item
+            android:icon="@drawable/ic_baseline_monetization_on_24"
+            android:id="@+id/item_reward"
+            android:title="@string/reward" />
+        <item
+            android:icon="@drawable/ic_baseline_power_settings_new_24"
+            android:id="@+id/item_exit"
+            android:title="@string/exit" />
+    </group>
+</menu>

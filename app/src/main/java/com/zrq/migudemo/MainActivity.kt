@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.interfaces.IPlayerControl
 import com.zrq.migudemo.service.PlayerService
 import com.zrq.migudemo.util.StatusBarUtil
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         StatusBarUtil.transparencyBar(this)
         mainModel = ViewModelProvider(this).get(MainModel::class.java)
         initService()
+        MMKV.initialize(this)
     }
 
     private lateinit var mainModel: MainModel

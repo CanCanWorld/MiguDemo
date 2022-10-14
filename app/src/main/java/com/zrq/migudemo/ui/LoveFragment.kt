@@ -7,6 +7,7 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.LoveSongAdapter
 import com.zrq.migudemo.bean.Picture
@@ -15,7 +16,7 @@ import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentLoveBinding
 import com.zrq.migudemo.db.SongDatabaseHelper
 import com.zrq.migudemo.interfaces.OnItemClickListener
-import com.zrq.migudemo.interfaces.OnItemLongClickListener
+import com.zrq.migudemo.interfaces.OnMoreClickListener
 import com.zrq.migudemo.util.Constants
 import okhttp3.*
 import java.io.IOException
@@ -24,7 +25,7 @@ import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
-    OnItemLongClickListener {
+    OnMoreClickListener {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -50,7 +51,6 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     override fun initEvent() {
         mBinding.apply {
 
-
         }
 
     }
@@ -60,12 +60,8 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     }
 
     override fun onItemClick(view: View, position: Int) {
-        mainModel.playerControl?.setList(listSong)
+        mainModel.setList(listSong)
         mainModel.onSongChangeListener?.onSongChange(position)
-    }
-
-    override fun onItemLongClick(view: View, position: Int) {
-        showPopMenu(view, position)
     }
 
     @SuppressLint("RtlHardcoded", "NotifyDataSetChanged")
@@ -88,7 +84,9 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
 
     private fun load() {
         random = Random(Date().time).nextInt(1000)
-        val url = Constants.getPicByCategory(Constants.ANIM, 1, random)
+        val bgCategory = MMKV.defaultMMKV().decodeString("background", Constants.ANIMATION)
+            ?: Constants.ANIMATION
+        val url = Constants.getPicByCategory(bgCategory, 1, random)
         Log.d(HomeFragment.TAG, "load: $url")
         val request: Request = Request.Builder()
             .url(url)
@@ -114,5 +112,9 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
                 }
             }
         })
+    }
+
+    override fun onMoreClick(view: View, position: Int) {
+        showPopMenu(view, position)
     }
 }

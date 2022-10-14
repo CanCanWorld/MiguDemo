@@ -258,5 +258,34 @@ public class SearchSong {
         public void setLyrics(String lyrics) {
             this.lyrics = lyrics;
         }
+
+        @Override
+        public String toString() {
+            return "MusicsDTO{" +
+                    "songName='" + songName + '\'' +
+                    ", isHdCrbt=" + isHdCrbt +
+                    ", albumName='" + albumName + '\'' +
+                    ", has24Bitqq='" + has24Bitqq + '\'' +
+                    ", hasMv='" + hasMv + '\'' +
+                    ", artist='" + artist + '\'' +
+                    ", hasHQqq='" + hasHQqq + '\'' +
+                    ", albumId='" + albumId + '\'' +
+                    ", title='" + title + '\'' +
+                    ", singerName='" + singerName + '\'' +
+                    ", cover='" + cover + '\'' +
+                    ", mp3=" + mp3 +
+                    ", hasSQqq='" + hasSQqq + '\'' +
+                    ", has3Dqq=" + has3Dqq +
+                    ", singerId='" + singerId + '\'' +
+                    ", mvCopyrightId='" + mvCopyrightId + '\'' +
+                    ", copyrightId='" + copyrightId + '\'' +
+                    ", unuseFlag=" + unuseFlag +
+                    ", auditionsFlag='" + auditionsFlag + '\'' +
+                    ", auditionsLength='" + auditionsLength + '\'' +
+                    ", mvId='" + mvId + '\'' +
+                    ", id='" + id + '\'' +
+                    ", lyrics='" + lyrics + '\'' +
+                    '}';
+        }
     }
 }

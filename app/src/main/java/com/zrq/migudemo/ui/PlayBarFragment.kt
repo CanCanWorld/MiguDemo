@@ -7,13 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
-import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
-import com.zrq.migudemo.R
-import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.FragmentPlayBarBinding
-import com.zrq.migudemo.interfaces.IPlayerViewControl
-import com.zrq.migudemo.view.VisualizeView.CIRCLE
 
 class PlayBarFragment
     (var position: Int) : BaseFragment<FragmentPlayBarBinding>() {
@@ -25,30 +20,17 @@ class PlayBarFragment
     }
 
     private lateinit var animation: ValueAnimator
-    private lateinit var mPlayerViewControl: IPlayerViewControl
 
     override fun initData() {
         initAnimation()
+        refreshPlayBar()
     }
 
     override fun initEvent() {
         mBinding.apply {
-
             llPlayBar.setOnClickListener {
-//                Navigation.findNavController(requireActivity(), R.id.fragment_container)
-//                    .navigate(R.id.playFragment)
-            }
-
-        }
-
-        mainModel.apply {
-            nowPlaying.observe(this@PlayBarFragment) {
-                if (it != null) {
-                    refreshPlayBar(it)
-                }
             }
         }
-
     }
 
     private fun initAnimation() {
@@ -61,21 +43,25 @@ class PlayBarFragment
         }
     }
 
-    private fun refreshPlayBar(song: SearchSong.MusicsDTO) {
-        mBinding.apply {
-            llPlayBar.visibility = View.VISIBLE
-            ivAlbum.visibility = View.VISIBLE
-            tvSongName.text = song.songName
-            tvSinger.text = song.singerName
-            Glide.with(this@PlayBarFragment)
-                .load(song.cover)
-                .into(ivAlbum)
-            animation.start()
+    private fun refreshPlayBar() {
+        val song = mainModel.getList()?.get(position)
+        if (song != null) {
+            mBinding.apply {
+                llPlayBar.visibility = View.VISIBLE
+                ivAlbum.visibility = View.VISIBLE
+                tvSongName.text = song.songName
+                tvSinger.text = song.singerName
+                Glide.with(this@PlayBarFragment)
+                    .load(song.cover)
+                    .into(ivAlbum)
+                animation.start()
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: $position")
     }
 
     companion object {

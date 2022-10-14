@@ -39,25 +39,14 @@ object PlayerHelper : Binder(), IPlayerControl {
     init {
         mMediaPlayer.setOnCompletionListener {
             Log.d(TAG, "setOnCompletionListener: ")
-//            next()
-            when (playList.size) {
-                1 -> {
-                    nowPlayingPosition = 0
-                }
-                else -> {
-                    if (nowPlayingPosition == playList.size - 1) {
-                        nowPlayingPosition = 0
-                    } else {
-                        nowPlayingPosition++
-                    }
-                }
-            }
+            next()
             mViewControl?.onSongPlayOver(nowPlayingPosition)
             Log.d(TAG, "nowPlayingPosition: $nowPlayingPosition")
         }
         // 因为直接切歌会发生错误，所以增加错误监听器。返回true。就不会回调onCompletion方法了。
         mMediaPlayer.setOnErrorListener { _, _, _ -> true }
 
+        initVisualizer()
     }
 
     private fun initVisualizer() {
@@ -76,7 +65,6 @@ object PlayerHelper : Binder(), IPlayerControl {
                 fft: ByteArray,
                 samplingRate: Int
             ) {
-                Log.d(TAG, "onFftDataCapture: $fft")
                 val model = FloatArray(fft.size / 2 + 1)
                 model[0] = abs(fft[1].toFloat())
                 var j = 1
@@ -109,9 +97,9 @@ object PlayerHelper : Binder(), IPlayerControl {
         Log.d(TAG, "play: ")
         mMediaPlayer.setOnPreparedListener {
             mMediaPlayer.start()
-            initVisualizer()
         }
         mMediaPlayer.start()
+        startTimer()
     }
 
     override fun pause() {
@@ -135,6 +123,7 @@ object PlayerHelper : Binder(), IPlayerControl {
             }
         }
         resetMediaPlayer()
+        play()
     }
 
     override fun pre() {
@@ -153,6 +142,7 @@ object PlayerHelper : Binder(), IPlayerControl {
             }
         }
         resetMediaPlayer()
+        play()
     }
 
     override fun seekTo(seek: Int) {
