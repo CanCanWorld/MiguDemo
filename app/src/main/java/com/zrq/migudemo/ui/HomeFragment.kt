@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioGroup
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.view.GravityCompat
@@ -22,9 +21,12 @@ import com.zrq.migudemo.adapter.PlayBarAdapter
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.FragmentHomeBinding
 import com.zrq.migudemo.interfaces.*
-import com.zrq.migudemo.util.Constants
 import com.zrq.migudemo.util.Constants.PAGE_LOVE
 import com.zrq.migudemo.util.Constants.PAGE_SEARCH
+import com.zrq.migudemo.util.Constants.QUALITY_BETTER
+import com.zrq.migudemo.util.Constants.QUALITY_HIGH
+import com.zrq.migudemo.util.Constants.QUALITY_NORMAL
+import com.zrq.migudemo.view.BackgroundDialog
 import com.zrq.migudemo.view.SingleDialog
 import com.zrq.migudemo.view.VisualizeView
 import kotlin.collections.ArrayList
@@ -47,8 +49,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     private lateinit var mPlayerViewControl: IPlayerViewControl
     private var isPause = false
     private var nowPage = PAGE_LOVE
-    private lateinit var bgDialog: SingleDialog
+    private lateinit var bgDialog: BackgroundDialog
     private lateinit var colorDialog: SingleDialog
+    private lateinit var playQualityDialog: SingleDialog
     private lateinit var rewardDialog: AlertDialog
     private var mPositionOffset = 0.0f
 
@@ -57,22 +60,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         initListDialog()
         adapter = PlayBarAdapter(requireActivity(), list)
         mBinding.viewPager2.adapter = adapter
-        bgDialog = SingleDialog(
-            requireContext(),
-            requireActivity(),
-            R.layout.dialog_single_background,
-            ArrayList<Int>().apply {
-                add(R.id.rb_erCiYuan)
-                add(R.id.rb_girl)
-                add(R.id.rb_animal)
-            },
-            this
-        )
+        bgDialog = BackgroundDialog(requireContext(), requireActivity())
         bgDialog.setTitle("壁纸类型")
+
         colorDialog = SingleDialog(
             requireContext(),
             requireActivity(),
-            R.layout.dialog_single_color,
+            R.layout.dialog_theme,
             ArrayList<Int>().apply {
                 add(R.id.rb_pink)
                 add(R.id.rb_red)
@@ -83,6 +77,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             },
             this
         )
+        colorDialog.setTitle("配色选择")
+
+        playQualityDialog = SingleDialog(
+            requireContext(),
+            requireActivity(),
+            R.layout.dialog_play_quality,
+            ArrayList<Int>().apply {
+                add(R.id.rb_normal)
+                add(R.id.rb_better)
+                add(R.id.rb_high)
+            },
+            this
+        )
+        playQualityDialog.setTitle("播放音质")
+
         rewardDialog = AlertDialog.Builder(requireContext(), R.style.TransparentDialog)
             .setView(R.layout.dialog_reward)
             .create()
@@ -204,14 +213,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                     R.id.item_home -> {
                         drawerLayout.closeDrawer(GravityCompat.START)
                     }
-                    R.id.item_reward -> {
-                        rewardDialog.show()
-                    }
                     R.id.item_background -> {
                         bgDialog.show()
                     }
                     R.id.item_color -> {
                         colorDialog.show()
+                    }
+                    R.id.item_quality -> {
+                        playQualityDialog.show()
+                    }
+                    R.id.item_reward -> {
+                        rewardDialog.show()
                     }
                     R.id.item_exit -> {
                         requireActivity().finish()
@@ -283,14 +295,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     override fun onDialogItemClick(view: View) {
 
         when (view.id) {
-            R.id.rb_erCiYuan -> {
-                MMKV.defaultMMKV().encode("background", Constants.ANIMATION)
+            R.id.rb_normal -> {
+                MMKV.defaultMMKV().encode("quality", QUALITY_NORMAL)
             }
-            R.id.rb_girl -> {
-                MMKV.defaultMMKV().encode("background", Constants.GIRL)
+            R.id.rb_better -> {
+                MMKV.defaultMMKV().encode("quality", QUALITY_BETTER)
             }
-            R.id.rb_animal -> {
-                MMKV.defaultMMKV().encode("background", Constants.ANIMAL)
+            R.id.rb_high -> {
+                MMKV.defaultMMKV().encode("quality", QUALITY_HIGH)
             }
             R.id.rb_pink -> {
                 MMKV.defaultMMKV().encode("color", R.color.pink)

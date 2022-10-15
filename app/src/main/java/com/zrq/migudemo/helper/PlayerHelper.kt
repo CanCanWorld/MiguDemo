@@ -6,12 +6,16 @@ import android.media.audiofx.Visualizer.OnDataCaptureListener
 import android.os.Binder
 import android.util.Log
 import com.google.gson.Gson
+import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.MainModel
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.bean.Song
 import com.zrq.migudemo.interfaces.IPlayerControl
 import com.zrq.migudemo.interfaces.IPlayerViewControl
 import com.zrq.migudemo.util.Constants
+import com.zrq.migudemo.util.Constants.BASE_URL
+import com.zrq.migudemo.util.Constants.QUALITY_BETTER
+import com.zrq.migudemo.util.Constants.SONG
 import okhttp3.*
 import java.io.IOException
 import java.util.*
@@ -163,7 +167,8 @@ object PlayerHelper : Binder(), IPlayerControl {
         mMediaPlayer.reset()
         val cid = playList[nowPlayingPosition].copyrightId
         if (cid.isNotEmpty()) {
-            val url = "${Constants.BASE_URL}${Constants.SONG}?cid=$cid&br=2"
+            val quality = MMKV.defaultMMKV().encode("quality", QUALITY_BETTER)
+            val url = "$BASE_URL$SONG?cid=$cid&br=$quality"
             Log.d(MainModel.TAG, "loadSong: $url")
             val request: Request = Request.Builder()
                 .url(url)

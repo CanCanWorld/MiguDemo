@@ -27,4 +27,8 @@
     <string name="animal">动物</string>
     <string name="theme">主题</string>
     <string name="color">配色</string>
+    <string name="play_quality">播放音质</string>
+    <string name="normal">普通</string>
+    <string name="better">高品质</string>
+    <string name="high">无损(VIP)</string>
 </resources>

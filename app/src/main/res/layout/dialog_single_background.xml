@@ -6,30 +6,7 @@
     android:padding="10dp">
 
     <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RadioButton
-            android:id="@+id/rb_erCiYuan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/erCiYuan"
-            android:textColor="@color/black" />
-
-        <RadioButton
-            android:id="@+id/rb_girl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/girl"
-            android:textColor="@color/black" />
-
-        <RadioButton
-            android:id="@+id/rb_animal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/animal"
-            android:textColor="@color/black" />
-
-    </RadioGroup>
-
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

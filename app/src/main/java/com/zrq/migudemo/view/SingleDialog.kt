@@ -29,11 +29,11 @@ class SingleDialog(
                 lp.width = display.width * 4 / 5
                 window!!.attributes = lp
                 setCanceledOnTouchOutside(true)
-                if (listenerArray != null) {
-                    for (id in listenerArray!!) {
-                        findViewById<View>(id).setOnClickListener(this)
-                    }
-                }
+            }
+        }
+        if (listenerArray != null) {
+            for (id in listenerArray!!) {
+                findViewById<View>(id).setOnClickListener(this)
             }
         }
     }

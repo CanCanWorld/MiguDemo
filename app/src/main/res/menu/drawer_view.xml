@@ -14,6 +14,10 @@
             android:id="@+id/item_color"
             android:title="@string/color" />
         <item
+            android:icon="@drawable/ic_baseline_audiotrack_24"
+            android:id="@+id/item_quality"
+            android:title="@string/play_quality" />
+        <item
             android:icon="@drawable/ic_baseline_monetization_on_24"
             android:id="@+id/item_reward"
             android:title="@string/reward" />
