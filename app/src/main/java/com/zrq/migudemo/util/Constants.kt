@@ -61,6 +61,14 @@ object Constants {
 
     const val GIRL = "4e4d610cdf714d2966000000"
 
+    const val LANDSCAPE = "4e4d610cdf714d2966000002"
+
+    const val GAME = "4e4d610cdf714d2966000007"
+
+    const val TEXT = "5109e04e48d5b9364ae9ac45"
+
+    const val VISION = "4fb479f75ba1c65561000027"
+
     fun getPicByCategory(category: String, limit: Int, num: Int): String {
         return "$PIC_BASE_URL$GET_PIC$category/vertical?limit=$limit&skip=${num * limit}&adult=false&first=0&order=hot\""
     }

@@ -12,6 +12,8 @@ interface IPlayerControl {
 
     fun play()
 
+    fun start()
+
     fun pause()
 
     fun next()

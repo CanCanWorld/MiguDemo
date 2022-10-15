@@ -46,7 +46,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     lateinit var adapter: PlayBarAdapter
     private lateinit var mPlayerViewControl: IPlayerViewControl
     private var isPause = false
-    private var nowPage = PAGE_SEARCH
+    private var nowPage = PAGE_LOVE
     private lateinit var bgDialog: SingleDialog
     private lateinit var colorDialog: SingleDialog
     private lateinit var rewardDialog: AlertDialog
@@ -260,6 +260,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         mainModel.playThis(position)
         refreshListDialog()
         adapter.notifyDataSetChanged()
+
+        mainModel.isPause.postValue(false)
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

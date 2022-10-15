@@ -102,6 +102,12 @@ object PlayerHelper : Binder(), IPlayerControl {
         startTimer()
     }
 
+    override fun start() {
+        mMediaPlayer.start()
+        startTimer()
+    }
+
+
     override fun pause() {
         mMediaPlayer.pause()
         stopTimer()
@@ -197,11 +203,14 @@ object PlayerHelper : Binder(), IPlayerControl {
     }
 
     private fun startTimer() {
-        timer = Timer()
-        if (mTimerTask == null) {
-            mTimerTask = SeekTimeTask()
+        if (timer == null) {
+            Log.d(TAG, "startTimer: ")
+            timer = Timer()
+            if (mTimerTask == null) {
+                mTimerTask = SeekTimeTask()
+            }
+            timer!!.schedule(mTimerTask, 0, 200)
         }
-        timer!!.schedule(mTimerTask, 0, 200)
     }
 
     private fun stopTimer() {
