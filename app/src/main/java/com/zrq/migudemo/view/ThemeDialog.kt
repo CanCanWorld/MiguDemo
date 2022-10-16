@@ -4,27 +4,17 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.RadioButton
-import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.R
 import com.zrq.migudemo.bean.Cate
-import com.zrq.migudemo.bean.Category
-import com.zrq.migudemo.databinding.DialogSingleBackgroundBinding
 import com.zrq.migudemo.databinding.DialogThemeBinding
-import com.zrq.migudemo.util.Constants.GET_CATEGORY
-import com.zrq.migudemo.util.Constants.PIC_BASE_URL
-import okhttp3.*
-import java.io.IOException
 
 class ThemeDialog(
     context: Context,
     private val activity: Activity,
-) : Dialog(context, R.style.SingleDialog), View.OnClickListener {
+) : Dialog(context, R.style.SingleDialog) {
 
     private val list = ArrayList<Cate>()
     private lateinit var mBinding: DialogThemeBinding
@@ -33,6 +23,7 @@ class ThemeDialog(
         super.onCreate(savedInstanceState)
         window?.setGravity(Gravity.CENTER)
         mBinding = DialogThemeBinding.inflate(LayoutInflater.from(context))
+        initEvent()
         setContentView(mBinding.root)
 
         val display = activity.windowManager.defaultDisplay
@@ -45,16 +36,58 @@ class ThemeDialog(
             }
         }
 
-        initEvent()
 
     }
 
     private fun initEvent() {
         mBinding.apply {
+            rbPink.setOnClickListener {
+                MMKV.defaultMMKV().encode("theme", R.color.pink)
+            }
+            rbRed.setOnClickListener {
+                MMKV.defaultMMKV().encode("theme", R.color.red)
+            }
+            rbPurple.setOnClickListener {
+                MMKV.defaultMMKV().encode("theme", R.color.purple_200)
+            }
+            rbTeal.setOnClickListener {
+                MMKV.defaultMMKV().encode("theme", R.color.teal_200)
+            }
+            rbGrey.setOnClickListener {
+                MMKV.defaultMMKV().encode("theme", R.color.grey)
+            }
+            rbBlank.setOnClickListener {
+                MMKV.defaultMMKV().encode("theme", R.color.black)
+            }
+        }
+    }
+
+    override fun show() {
+        super.show()
+        when (MMKV.defaultMMKV().decodeInt("theme", R.color.pink)) {
+            R.color.pink -> {
+                mBinding.rbPink.isChecked = true
+            }
+            R.color.red -> {
+                mBinding.rbRed.isChecked = true
+            }
+            R.color.purple_200 -> {
+                mBinding.rbPurple.isChecked = true
+            }
+            R.color.teal_200 -> {
+                mBinding.rbTeal.isChecked = true
+            }
+            R.color.grey -> {
+                mBinding.rbGrey.isChecked = true
+            }
+            R.color.black -> {
+                mBinding.rbBlank.isChecked = true
+            }
+            else -> {}
         }
     }
 
     companion object {
-        const val TAG = "BackgroundDialog"
+        const val TAG = "ThemeDialog"
     }
 }

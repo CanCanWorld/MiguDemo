@@ -28,9 +28,9 @@ object Constants {
     //音质
     const val QUALITY_NORMAL = 1
 
-    const val QUALITY_BETTER = 1
+    const val QUALITY_BETTER = 2
 
-    const val QUALITY_HIGH = 1
+    const val QUALITY_HIGH = 3
 
     //page
     const val PAGE_SEARCH = 1

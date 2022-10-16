@@ -4,9 +4,13 @@ import android.Manifest
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.IBinder
+import android.provider.Settings
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.tencent.mmkv.MMKV
@@ -14,15 +18,26 @@ import com.zrq.migudemo.interfaces.IPlayerControl
 import com.zrq.migudemo.service.PlayerService
 import com.zrq.migudemo.util.StatusBarUtil
 
+
 class MainActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ActivityCompat.requestPermissions(this, PERMISSIONS, 1)
+        requestPermissions()
         StatusBarUtil.transparencyBar(this)
         mainModel = ViewModelProvider(this).get(MainModel::class.java)
         initService()
         MMKV.initialize(this)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun requestPermissions() {
+        if (!Environment.isExternalStorageManager()) {
+            val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+            startActivity(intent)
+        }
+        ActivityCompat.requestPermissions(this, PERMISSIONS, 1)
     }
 
     private lateinit var mainModel: MainModel
@@ -45,6 +60,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         val PERMISSIONS = arrayOf(
             Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.MODIFY_AUDIO_SETTINGS
         )
     }

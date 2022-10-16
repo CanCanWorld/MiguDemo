@@ -14,6 +14,8 @@ import com.zrq.migudemo.R
 import com.zrq.migudemo.bean.Cate
 import com.zrq.migudemo.bean.Category
 import com.zrq.migudemo.databinding.DialogSingleBackgroundBinding
+import com.zrq.migudemo.util.Constants
+import com.zrq.migudemo.util.Constants.ANIMATION
 import com.zrq.migudemo.util.Constants.GET_CATEGORY
 import com.zrq.migudemo.util.Constants.PIC_BASE_URL
 import okhttp3.*
@@ -22,7 +24,7 @@ import java.io.IOException
 class BackgroundDialog(
     context: Context,
     private val activity: Activity,
-) : Dialog(context, R.style.SingleDialog){
+) : Dialog(context, R.style.SingleDialog) {
 
     private val list = ArrayList<Cate>()
     private lateinit var mBinding: DialogSingleBackgroundBinding
@@ -80,6 +82,11 @@ class BackgroundDialog(
                                     MMKV.defaultMMKV().encode("background", it1.id)
                                 }
                                 mBinding.radioGroup.addView(rb)
+                                if (it1.id ==
+                                    MMKV.defaultMMKV().decodeString("background", ANIMATION)
+                                ) {
+                                    rb.isChecked = true
+                                }
                             }
                         }
                     }
@@ -87,7 +94,6 @@ class BackgroundDialog(
             }
         })
     }
-
 
     companion object {
         const val TAG = "BackgroundDialog"

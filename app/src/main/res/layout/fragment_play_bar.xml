@@ -23,25 +23,42 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/tv_song_name"
-            style="@style/tv_song_name"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="95dp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/split"
-            style="@style/tv_singer"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/tv_song_name"
-            android:paddingHorizontal="5dp"
-            android:text="@string/split" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_singer"
-            style="@style/tv_singer"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/split" />
+                <TextView
+                    android:id="@+id/tv_song_name"
+                    style="@style/tv_song_name" />
+
+                <TextView
+                    android:id="@+id/split"
+                    style="@style/tv_singer"
+                    android:paddingHorizontal="5dp"
+                    android:text="@string/split" />
+
+                <TextView
+                    android:id="@+id/tv_singer"
+                    style="@style/tv_singer" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_lyric"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/lyric"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+        </LinearLayout>
 
     </RelativeLayout>
 

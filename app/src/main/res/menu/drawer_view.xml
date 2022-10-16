@@ -18,6 +18,10 @@
             android:id="@+id/item_quality"
             android:title="@string/play_quality" />
         <item
+            android:icon="@drawable/ic_baseline_arrow_circle_down_24"
+            android:id="@+id/item_download_path"
+            android:title="@string/download_path" />
+        <item
             android:icon="@drawable/ic_baseline_monetization_on_24"
             android:id="@+id/item_reward"
             android:title="@string/reward" />

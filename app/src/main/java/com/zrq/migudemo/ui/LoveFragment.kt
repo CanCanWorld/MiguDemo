@@ -4,20 +4,25 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.LoveSongAdapter
+import com.zrq.migudemo.bean.DownloadSong
 import com.zrq.migudemo.bean.Picture
 import com.zrq.migudemo.bean.SearchSong
+import com.zrq.migudemo.bean.Song
 import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentLoveBinding
 import com.zrq.migudemo.db.SongDatabaseHelper
+import com.zrq.migudemo.helper.PlayerHelper
 import com.zrq.migudemo.interfaces.OnItemClickListener
 import com.zrq.migudemo.interfaces.OnMoreClickListener
 import com.zrq.migudemo.util.Constants
+import com.zrq.migudemo.view.DownloadDialog
 import okhttp3.*
 import java.io.IOException
 import java.util.*
@@ -37,8 +42,11 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     private lateinit var adapter: LoveSongAdapter
     private val listSong = ArrayList<SearchSong.MusicsDTO>()
     private var random = 0
+    private lateinit var downloadDialog: DownloadDialog
 
     override fun initData() {
+        downloadDialog = DownloadDialog(requireContext(), requireActivity())
+        downloadDialog.setTitle("选择下载音质")
         load()
         songDaoImpl = SongDaoImpl(SongDatabaseHelper(requireContext()))
         listSong.clear()
@@ -74,6 +82,10 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
                     songDaoImpl.deleteSong(listSong[position].id.toInt())
                     listSong.removeAt(position)
                     adapter.notifyDataSetChanged()
+                }
+                R.id.menu_download -> {
+                    downloadDialog.downloadSong = listSong[position]
+                    downloadDialog.show()
                 }
                 else -> {}
             }

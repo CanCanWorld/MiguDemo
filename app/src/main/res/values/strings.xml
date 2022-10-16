@@ -31,4 +31,9 @@
     <string name="normal">普通</string>
     <string name="better">高品质</string>
     <string name="high">无损(VIP)</string>
+    <string name="download">下载</string>
+    <string name="download_path">下载路径</string>
+    <string name="back_to_parent">返回上一级</string>
+    <string name="now_path">当前路径:</string>
+    <string name="select">选择</string>
 </resources>

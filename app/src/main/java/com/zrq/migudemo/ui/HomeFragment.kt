@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.ListSongAdapter
@@ -23,17 +24,11 @@ import com.zrq.migudemo.databinding.FragmentHomeBinding
 import com.zrq.migudemo.interfaces.*
 import com.zrq.migudemo.util.Constants.PAGE_LOVE
 import com.zrq.migudemo.util.Constants.PAGE_SEARCH
-import com.zrq.migudemo.util.Constants.QUALITY_BETTER
-import com.zrq.migudemo.util.Constants.QUALITY_HIGH
-import com.zrq.migudemo.util.Constants.QUALITY_NORMAL
-import com.zrq.migudemo.view.BackgroundDialog
-import com.zrq.migudemo.view.SingleDialog
-import com.zrq.migudemo.view.VisualizeView
+import com.zrq.migudemo.view.*
 import kotlin.collections.ArrayList
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(),
-    OnSongChangeListener, OnItemClickListener, OnSongDeleteListener,
-    OnDialogItemClickListener {
+    OnSongChangeListener, OnItemClickListener, OnSongDeleteListener {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -50,11 +45,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     private var isPause = false
     private var nowPage = PAGE_LOVE
     private lateinit var bgDialog: BackgroundDialog
-    private lateinit var colorDialog: SingleDialog
-    private lateinit var playQualityDialog: SingleDialog
+    private lateinit var themeDialog: ThemeDialog
+    private lateinit var playQualityDialog: PlayQualityDialog
+    private lateinit var pathDialog: PathDialog
     private lateinit var rewardDialog: AlertDialog
     private var mPositionOffset = 0.0f
-
 
     override fun initData() {
         initListDialog()
@@ -63,34 +58,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         bgDialog = BackgroundDialog(requireContext(), requireActivity())
         bgDialog.setTitle("壁纸类型")
 
-        colorDialog = SingleDialog(
-            requireContext(),
-            requireActivity(),
-            R.layout.dialog_theme,
-            ArrayList<Int>().apply {
-                add(R.id.rb_pink)
-                add(R.id.rb_red)
-                add(R.id.rb_purple)
-                add(R.id.rb_teal)
-                add(R.id.rb_grey)
-                add(R.id.rb_blank)
-            },
-            this
-        )
-        colorDialog.setTitle("配色选择")
+        themeDialog = ThemeDialog(requireContext(), requireActivity())
+        themeDialog.setTitle("配色选择")
 
-        playQualityDialog = SingleDialog(
-            requireContext(),
-            requireActivity(),
-            R.layout.dialog_play_quality,
-            ArrayList<Int>().apply {
-                add(R.id.rb_normal)
-                add(R.id.rb_better)
-                add(R.id.rb_high)
-            },
-            this
-        )
+        playQualityDialog = PlayQualityDialog(requireContext(), requireActivity())
         playQualityDialog.setTitle("播放音质")
+
+        pathDialog = PathDialog(requireContext(), requireActivity())
 
         rewardDialog = AlertDialog.Builder(requireContext(), R.style.TransparentDialog)
             .setView(R.layout.dialog_reward)
@@ -102,6 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
             override fun onSeekChange(progress: Int, elapsedTime: Int) {
                 mBinding.seekBar.progress = progress
+                mainModel.onLyricChangeListener?.onLyricChange(elapsedTime)
             }
 
             override fun onSongPlayOver(position: Int) {
@@ -112,7 +87,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             override fun onVisualizeView(mode: FloatArray) {
                 mBinding.visualizeView.setColor(
                     resources.getColor(
-                        MMKV.defaultMMKV().decodeInt("color", R.color.pink)
+                        MMKV.defaultMMKV().decodeInt("theme", R.color.pink)
                     )
                 )
                 mBinding.visualizeView.setData(mode)
@@ -122,9 +97,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
         mainModel.registerViewControl(mPlayerViewControl)
 
-        mainModel.onSongChangeListener = this@HomeFragment
+        mainModel.onSongChangeListener = this
 
-        mainModel.isPause.observe(this@HomeFragment) {
+        mainModel.isPause.observe(this) {
             if (it != null) {
                 isPause = it
                 if (it) {
@@ -217,13 +192,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                         bgDialog.show()
                     }
                     R.id.item_color -> {
-                        colorDialog.show()
+                        themeDialog.show()
                     }
                     R.id.item_quality -> {
                         playQualityDialog.show()
                     }
                     R.id.item_reward -> {
                         rewardDialog.show()
+                    }
+                    R.id.item_download_path -> {
+                        pathDialog.show()
                     }
                     R.id.item_exit -> {
                         requireActivity().finish()
@@ -290,70 +268,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         mBinding.viewPager2.setCurrentItem(position, false)
         mainModel.nowPlaying.postValue(list[position])
         mainModel.playThis(position)
-    }
-
-    override fun onDialogItemClick(view: View) {
-
-        when (view.id) {
-            R.id.rb_normal -> {
-                MMKV.defaultMMKV().encode("quality", QUALITY_NORMAL)
-            }
-            R.id.rb_better -> {
-                MMKV.defaultMMKV().encode("quality", QUALITY_BETTER)
-            }
-            R.id.rb_high -> {
-                MMKV.defaultMMKV().encode("quality", QUALITY_HIGH)
-            }
-            R.id.rb_pink -> {
-                MMKV.defaultMMKV().encode("color", R.color.pink)
-                mBinding.visualizeView.setColor(
-                    resources.getColor(
-                        MMKV.defaultMMKV().decodeInt("color", R.color.pink)
-                    )
-                )
-            }
-            R.id.rb_red -> {
-                MMKV.defaultMMKV().encode("color", R.color.red)
-                mBinding.visualizeView.setColor(
-                    resources.getColor(
-                        MMKV.defaultMMKV().decodeInt("color", R.color.red)
-                    )
-                )
-            }
-            R.id.rb_purple -> {
-                MMKV.defaultMMKV().encode("color", R.color.purple_200)
-                mBinding.visualizeView.setColor(
-                    resources.getColor(
-                        MMKV.defaultMMKV().decodeInt("color", R.color.purple_200)
-                    )
-                )
-            }
-            R.id.rb_teal -> {
-                MMKV.defaultMMKV().encode("color", R.color.teal_200)
-                mBinding.visualizeView.setColor(
-                    resources.getColor(
-                        MMKV.defaultMMKV().decodeInt("color", R.color.teal_200)
-                    )
-                )
-            }
-            R.id.rb_grey -> {
-                MMKV.defaultMMKV().encode("color", R.color.grey)
-                mBinding.visualizeView.setColor(
-                    resources.getColor(
-                        MMKV.defaultMMKV().decodeInt("color", R.color.grey)
-                    )
-                )
-            }
-            R.id.rb_blank -> {
-                MMKV.defaultMMKV().encode("color", R.color.black)
-                mBinding.visualizeView.setColor(
-                    resources.getColor(
-                        MMKV.defaultMMKV().decodeInt("color", R.color.black)
-                    )
-                )
-            }
-            else -> {}
-        }
     }
 
     companion object {

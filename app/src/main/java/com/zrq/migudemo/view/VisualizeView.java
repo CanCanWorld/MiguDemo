@@ -130,7 +130,7 @@ public class VisualizeView extends View {
             case SINGLE:
                 for (int i = 0; i < mSpectrumCount; i++) {
                     canvas.drawLine(mRect.width() * i / mSpectrumCount, mRect.height(),
-                            mRect.width() * i / mSpectrumCount, 2 + mRect.height() - mRawAudioBytes[i], mPaint);
+                            mRect.width() * i / mSpectrumCount, 2 + mRect.height() - mRawAudioBytes[i] * 4, mPaint);
                 }
                 break;
             case CIRCLE:

@@ -11,16 +11,4 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 
-    <fragment
-        android:id="@+id/playFragment"
-        android:name="com.zrq.migudemo.ui.PlayFragment"
-        android:label="fragment_play"
-        tools:layout="@layout/fragment_play" />
-    <action
-        android:id="@+id/action_global_playFragment"
-        app:destination="@id/playFragment"
-        app:enterAnim="@anim/from_bottom"
-        app:exitAnim="@anim/to_top"
-        app:popEnterAnim="@anim/from_top"
-        app:popExitAnim="@anim/to_bottom" />
 </navigation>

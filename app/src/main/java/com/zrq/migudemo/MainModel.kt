@@ -2,9 +2,11 @@ package com.zrq.migudemo
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.zrq.migudemo.bean.LyricByTime
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.interfaces.IPlayerControl
 import com.zrq.migudemo.interfaces.IPlayerViewControl
+import com.zrq.migudemo.interfaces.OnLyricChangeListener
 import com.zrq.migudemo.interfaces.OnSongChangeListener
 
 class MainModel : ViewModel() {
@@ -18,6 +20,8 @@ class MainModel : ViewModel() {
     val isPause = MutableLiveData<Boolean>()
 
     var onSongChangeListener: OnSongChangeListener? = null
+
+    var onLyricChangeListener: OnLyricChangeListener? = null
 
     var playerControl: IPlayerControl? = null
 

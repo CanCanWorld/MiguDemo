@@ -7,13 +7,12 @@ import android.os.Binder
 import android.util.Log
 import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
-import com.zrq.migudemo.MainModel
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.bean.Song
 import com.zrq.migudemo.interfaces.IPlayerControl
 import com.zrq.migudemo.interfaces.IPlayerViewControl
-import com.zrq.migudemo.util.Constants
 import com.zrq.migudemo.util.Constants.BASE_URL
+import com.zrq.migudemo.util.Constants.LYRIC
 import com.zrq.migudemo.util.Constants.QUALITY_BETTER
 import com.zrq.migudemo.util.Constants.SONG
 import okhttp3.*
@@ -167,16 +166,16 @@ object PlayerHelper : Binder(), IPlayerControl {
         mMediaPlayer.reset()
         val cid = playList[nowPlayingPosition].copyrightId
         if (cid.isNotEmpty()) {
-            val quality = MMKV.defaultMMKV().encode("quality", QUALITY_BETTER)
+            val quality = MMKV.defaultMMKV().decodeInt("quality", QUALITY_BETTER)
             val url = "$BASE_URL$SONG?cid=$cid&br=$quality"
-            Log.d(MainModel.TAG, "loadSong: $url")
+            Log.d(TAG, "loadSong: $url")
             val request: Request = Request.Builder()
                 .url(url)
                 .get()
                 .build()
             OkHttpClient().newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    Log.d(MainModel.TAG, "onFailure: ")
+                    Log.d(TAG, "onFailure: ")
                 }
 
                 override fun onResponse(call: Call, response: Response) {

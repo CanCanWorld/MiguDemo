@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="10dp">
+
+    <TextView
+        android:layout_weight="1"
+        android:paddingVertical="4dp"
+        android:id="@+id/tv_path"
+        style="@style/tv_singer"
+        android:background="@drawable/selector_item"/>
+
+    <TextView
+        android:id="@+id/btn_ensure"
+        style="@style/tv_singer"
+        android:padding="4dp"
+        android:text="@string/select"
+        android:textColor="@color/white__"
+        android:background="@drawable/selector_btn_ensure"/>
+
+
+</LinearLayout>
