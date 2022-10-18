@@ -26,6 +26,14 @@
             android:id="@+id/item_reward"
             android:title="@string/reward" />
         <item
+            android:icon="@drawable/ic_baseline_refresh_24"
+            android:id="@+id/item_update"
+            android:title="@string/check_update" />
+        <item
+            android:icon="@drawable/ic_baseline_face_24"
+            android:id="@+id/item_customer"
+            android:title="@string/customer" />
+        <item
             android:icon="@drawable/ic_baseline_power_settings_new_24"
             android:id="@+id/item_exit"
             android:title="@string/exit" />

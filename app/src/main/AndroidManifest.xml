@@ -20,7 +20,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MiguDemo"
+        android:theme="@style/Theme.Grey"
         tools:targetApi="31">
         <service
             android:name=".service.PlayerService"

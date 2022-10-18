@@ -3,4 +3,7 @@
     <item
         android:id="@+id/menu_love"
         android:title="@string/love" />
+    <item
+        android:id="@+id/menu_download"
+        android:title="@string/download" />
 </menu>

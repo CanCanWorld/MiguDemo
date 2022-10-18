@@ -11,9 +11,11 @@ import com.google.gson.Gson
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.zrq.migudemo.R
+import com.zrq.migudemo.adapter.SearchAlbumAdapter
 import com.zrq.migudemo.adapter.SearchSingerAdapter
 import com.zrq.migudemo.adapter.SearchSongAdapter
 import com.zrq.migudemo.adapter.SearchSongListAdapter
+import com.zrq.migudemo.bean.SearchAlbum
 import com.zrq.migudemo.bean.SearchSinger
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.bean.SearchSongList
@@ -24,9 +26,11 @@ import com.zrq.migudemo.interfaces.OnItemClickListener
 import com.zrq.migudemo.interfaces.OnMoreClickListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SEARCH
+import com.zrq.migudemo.util.Constants.TYPE_ALBUM
 import com.zrq.migudemo.util.Constants.TYPE_SINGER
 import com.zrq.migudemo.util.Constants.TYPE_SONG
 import com.zrq.migudemo.util.Constants.TYPE_SONG_LIST
+import com.zrq.migudemo.view.DownloadDialog
 import okhttp3.*
 import java.io.IOException
 
@@ -43,12 +47,15 @@ class SearchResultFragment(
     private lateinit var songAdapter: SearchSongAdapter
     private lateinit var singerAdapter: SearchSingerAdapter
     private lateinit var songListAdapter: SearchSongListAdapter
+    private lateinit var albumAdapter: SearchAlbumAdapter
     private val listSong = ArrayList<SearchSong.MusicsDTO>()
     private val listSinger = ArrayList<SearchSinger.ArtistsDTO>()
     private val listSongList = ArrayList<SearchSongList.SongListsBean>()
+    private val listAlbum = ArrayList<SearchAlbum.AlbumsDTO>()
     private var key = ""
     private var offset = 1
     private lateinit var songDaoImpl: SongDaoImpl
+    private var downloadDialog: DownloadDialog? = null
 
     override fun initData() {
         songDaoImpl = SongDaoImpl(SongDatabaseHelper(requireContext()))
@@ -77,6 +84,12 @@ class SearchResultFragment(
 
                 }
             })
+        albumAdapter =
+            SearchAlbumAdapter(requireContext(), listAlbum, object : OnItemClickListener {
+                override fun onItemClick(view: View, position: Int) {
+
+                }
+            })
         when (type) {
             TYPE_SONG -> {
                 mBinding.recyclerView.adapter = songAdapter
@@ -86,6 +99,9 @@ class SearchResultFragment(
             }
             TYPE_SONG_LIST -> {
                 mBinding.recyclerView.adapter = songListAdapter
+            }
+            TYPE_ALBUM -> {
+                mBinding.recyclerView.adapter = albumAdapter
             }
             else -> {}
         }
@@ -118,7 +134,7 @@ class SearchResultFragment(
     }
 
     private fun load() {
-        if (key.isNotEmpty()) {
+        if (key != "") {
             val url = "$BASE_URL$SEARCH?key=$key&type=$type&offset=$offset"
             Log.d(SearchFragment.TAG, "initEvent: $url")
             val request: Request = Request.Builder()
@@ -128,10 +144,7 @@ class SearchResultFragment(
             OkHttpClient().newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.d(TAG, "onFailure: ")
-                    requireActivity().runOnUiThread {
-                        mBinding.refreshLayout.finishRefresh()
-                        mBinding.refreshLayout.finishLoadMore()
-                    }
+                    finishRefreshOrLoad()
                 }
 
                 @SuppressLint("NotifyDataSetChanged")
@@ -148,9 +161,10 @@ class SearchResultFragment(
                                     listSong.addAll(song.musics)
                                     requireActivity().runOnUiThread {
                                         songAdapter.notifyDataSetChanged()
-                                        mBinding.refreshLayout.finishRefresh()
-                                        mBinding.refreshLayout.finishLoadMore()
+                                        finishRefreshOrLoad()
                                     }
+                                }else{
+                                    finishRefreshOrLoad()
                                 }
                             }
                             TYPE_SINGER -> {
@@ -161,9 +175,10 @@ class SearchResultFragment(
                                     listSinger.addAll(singer.artists)
                                     requireActivity().runOnUiThread {
                                         singerAdapter.notifyDataSetChanged()
-                                        mBinding.refreshLayout.finishRefresh()
-                                        mBinding.refreshLayout.finishLoadMore()
+                                        finishRefreshOrLoad()
                                     }
+                                }else{
+                                    finishRefreshOrLoad()
                                 }
                             }
                             TYPE_SONG_LIST -> {
@@ -174,32 +189,67 @@ class SearchResultFragment(
                                     listSongList.addAll(songList.songLists)
                                     requireActivity().runOnUiThread {
                                         songListAdapter.notifyDataSetChanged()
-                                        mBinding.refreshLayout.finishRefresh()
-                                        mBinding.refreshLayout.finishLoadMore()
+                                        finishRefreshOrLoad()
                                     }
+                                }else{
+                                    finishRefreshOrLoad()
+                                }
+                            }
+                            TYPE_ALBUM -> {
+                                val album = Gson().fromJson(json, SearchAlbum::class.java)
+                                if (album != null && album.albums != null) {
+                                    if (offset == 1)
+                                        listAlbum.clear()
+                                    listAlbum.addAll(album.albums)
+                                    requireActivity().runOnUiThread {
+                                        albumAdapter.notifyDataSetChanged()
+                                        finishRefreshOrLoad()
+                                    }
+                                }else{
+                                    finishRefreshOrLoad()
                                 }
                             }
                             else -> {}
                         }
+                    }else{
+                        finishRefreshOrLoad()
                     }
                 }
             })
         }
+        else{
+            mBinding.refreshLayout.finishRefresh()
+            mBinding.refreshLayout.finishLoadMore()
+        }
     }
 
+    private fun finishRefreshOrLoad() {
+        requireActivity().runOnUiThread {
+            mBinding.refreshLayout.finishRefresh()
+            mBinding.refreshLayout.finishLoadMore()
+        }
+    }
     companion object {
         const val TAG = "SearchResultFragment"
         fun newInstance(type: Int) = SearchResultFragment(type)
     }
 
-    @SuppressLint("RtlHardcoded", "NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged")
     private fun showPopMenu(view: View, position: Int) {
-        val popupMenu = PopupMenu(requireContext(), view, Gravity.RIGHT)
+        val popupMenu = PopupMenu(requireContext(), view, Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.menu_song_long_click, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_love -> {
                     songDaoImpl.addSong(listSong[position])
+                }
+                R.id.menu_download -> {
+                    if (downloadDialog == null) {
+                        downloadDialog = DownloadDialog(requireContext(), requireActivity())
+                    }
+                    downloadDialog!!.downloadSong = listSong[position]
+                    downloadDialog!!.setTitle("选择下载音质")
+                    downloadDialog!!.show()
                 }
                 else -> {}
             }

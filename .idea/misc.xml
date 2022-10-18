@@ -29,25 +29,45 @@
         <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/layout/item_song_of_singer.xml" value="0.5" />
         <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/menu/drawer_view.xml" value="0.19410004275331338" />
         <entry key="..\:/Android_project_git/MiguDemo/app/src/main/res/menu/menu_love_long_click.xml" value="0.27661393758016245" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1435" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_android_24.xml" value="0.1435" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.251" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_audiotrack_24.xml" value="0.1435" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_expand_more_24.xml" value="0.251" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_monetization_on_24.xml" value="0.1435" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_pause_circle_outline_24.xml" value="0.1435" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_photo_24.xml" value="0.1435" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_power_settings_new_24.xml" value="0.1435" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.1435" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.251" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_baseline_skip_next_24.xml" value="0.1435" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1435" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/seekbar_progress.xml" value="0.1435" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/seekbar_thumb.xml" value="0.1435" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/shape_et_search.xml" value="0.2205" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/shape_love_rb.xml" value="0.1405" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/shape_love_tab.xml" value="0.1805" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/drawable/shape_tab_indicatir.xml" value="0.1255" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/activity_main.xml" value="0.365036231884058" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/activity_main222.xml" value="0.2916666666666667" />
-        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_home.xml" value="0.18" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_love.xml" value="0.4432291666666667" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_play.xml" value="0.33" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_search.xml" value="0.27247191011235955" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_search_result.xml" value="0.4330543933054393" />
-        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_singer_info.xml" value="0.4432291666666667" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/fragment_singer_info.xml" value="0.25" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/item_album.xml" value="0.36822916666666666" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/item_list_song.xml" value="0.36822916666666666" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/item_path.xml" value="0.4048913043478261" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/item_search_singer.xml" value="0.2984375" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/item_search_song.xml" value="0.25" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/item_song_list.xml" value="0.36822916666666666" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/item_song_of_singer.xml" value="0.23910840932117527" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/layout/navigation_header.xml" value="0.28541666666666665" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/menu/drawer_view.xml" value="0.22" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/menu/menu_item_long_click.xml" value="0.25" />
         <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/menu/menu_love_long_click.xml" value="0.27395833333333336" />
+        <entry key="..\:/Users/smq/AndroidStudioProjects/MiguDemo/app/src/main/res/menu/menu_song_long_click.xml" value="0.25" />
       </map>
     </option>
   </component>

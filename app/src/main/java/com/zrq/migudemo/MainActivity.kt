@@ -23,12 +23,42 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MMKV.initialize(this)
+        setBaseTheme()
         setContentView(R.layout.activity_main)
         requestPermissions()
         StatusBarUtil.transparencyBar(this)
         mainModel = ViewModelProvider(this).get(MainModel::class.java)
         initService()
-        MMKV.initialize(this)
+    }
+
+    private fun setBaseTheme() {
+        val theme = MMKV.defaultMMKV().decodeString("theme_type")
+        val id: Int
+        when (theme) {
+            "red" -> {
+                id = R.style.Theme_Red
+            }
+            "pink" -> {
+                id = R.style.Theme_Pink
+            }
+            "purple" -> {
+                id = R.style.Theme_Purple
+            }
+            "teal" -> {
+                id = R.style.Theme_Teal
+            }
+            "grey" -> {
+                id = R.style.Theme_Grey
+            }
+            "black" -> {
+                id = R.style.Theme_Black
+            }
+            else -> {
+                id = R.style.Theme_Red
+            }
+        }
+        setTheme(id)
     }
 
     @RequiresApi(Build.VERSION_CODES.R)

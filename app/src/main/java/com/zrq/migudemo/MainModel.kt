@@ -4,10 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zrq.migudemo.bean.LyricByTime
 import com.zrq.migudemo.bean.SearchSong
-import com.zrq.migudemo.interfaces.IPlayerControl
-import com.zrq.migudemo.interfaces.IPlayerViewControl
-import com.zrq.migudemo.interfaces.OnLyricChangeListener
-import com.zrq.migudemo.interfaces.OnSongChangeListener
+import com.zrq.migudemo.interfaces.*
 
 class MainModel : ViewModel() {
 
@@ -22,6 +19,8 @@ class MainModel : ViewModel() {
     var onSongChangeListener: OnSongChangeListener? = null
 
     var onLyricChangeListener: OnLyricChangeListener? = null
+
+    var onBackgroundChangeListener: OnBackgroundChangeListener? = null
 
     var playerControl: IPlayerControl? = null
 

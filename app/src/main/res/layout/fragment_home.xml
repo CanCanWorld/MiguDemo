@@ -59,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="4dp"
+            app:paintColor="?attr/mainColor"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/guideline1"
             app:layout_constraintStart_toStartOf="parent" />
@@ -115,7 +116,7 @@
                 android:backgroundTint="@color/white"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_settings_24"
-                app:tint="@color/pink" />
+                app:tint="?attr/mainColor" />
 
             <ImageButton
                 android:id="@+id/ib_love"
@@ -125,7 +126,7 @@
                 android:backgroundTint="@color/white"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_favorite_24"
-                app:tint="@color/pink" />
+                app:tint="?attr/mainColor" />
 
             <ImageButton
                 android:id="@+id/ib_search"
@@ -135,7 +136,7 @@
                 android:backgroundTint="@color/white"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_search_24"
-                app:tint="@color/pink" />
+                app:tint="?attr/mainColor" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -144,6 +145,7 @@
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        app:headerLayout="@layout/navigation_header"
         android:layout_gravity="start"
         app:menu="@menu/drawer_view" />
 </androidx.drawerlayout.widget.DrawerLayout>

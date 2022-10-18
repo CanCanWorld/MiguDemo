@@ -54,7 +54,7 @@ object Utils {
                 if (filePath != null) {
                     val sdf = SimpleDateFormat("yyyyMMdd_HHmmss")
                     val fileName = sdf.format(Date().time) + song.name + ".mp3"
-                    val dir = File(filePath!!)
+                    val dir = File(filePath)
                     if (!dir.exists()) {
                         dir.mkdir()
                     }
@@ -78,7 +78,6 @@ object Utils {
                                     btn.text = "$progress%"
                                 }
                             }
-
                         }
                     }
                     handler.post {

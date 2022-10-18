@@ -1,8 +1,10 @@
 package com.zrq.migudemo.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -46,7 +48,6 @@ public class VisualizeView extends View {
     protected Path mPath;
     protected float centerX, centerY;
     private int mode;
-    private int color = getResources().getColor(R.color.black);
     public static final int SINGLE = 0;
     public static final int CIRCLE = 1;
     public static final int NET = 2;
@@ -62,6 +63,9 @@ public class VisualizeView extends View {
 
     public VisualizeView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VisualizeView);
+        mColor = typedArray.getColor(R.styleable.VisualizeView_paintColor, Color.BLACK);
+        typedArray.recycle();
         init();
     }
 
@@ -70,7 +74,7 @@ public class VisualizeView extends View {
 
         mPaint = new Paint();
         mPaint.setStrokeWidth(mStrokeWidth);
-        mPaint.setColor(color);
+        mPaint.setColor(mColor);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setAntiAlias(true);
         mPaint.setMaskFilter(new BlurMaskFilter(5, BlurMaskFilter.Blur.SOLID));
@@ -226,7 +230,7 @@ public class VisualizeView extends View {
     }
 
     public void setColor(int color) {
-        this.color = color;
+        mColor = color;
         mPaint.setColor(color);
     }
 }

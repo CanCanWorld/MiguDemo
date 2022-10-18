@@ -3,6 +3,7 @@ package com.zrq.migudemo.view
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -10,13 +11,14 @@ import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.R
 import com.zrq.migudemo.bean.Cate
 import com.zrq.migudemo.databinding.DialogThemeBinding
+import com.zrq.migudemo.interfaces.OnThemeChangeListener
 
 class ThemeDialog(
     context: Context,
     private val activity: Activity,
+    private val onThemeChangeListener: OnThemeChangeListener
 ) : Dialog(context, R.style.SingleDialog) {
 
-    private val list = ArrayList<Cate>()
     private lateinit var mBinding: DialogThemeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,45 +44,51 @@ class ThemeDialog(
     private fun initEvent() {
         mBinding.apply {
             rbPink.setOnClickListener {
-                MMKV.defaultMMKV().encode("theme", R.color.pink)
+                MMKV.defaultMMKV().encode("theme_type", "pink")
+                onThemeChangeListener.onThemeChange()
             }
             rbRed.setOnClickListener {
-                MMKV.defaultMMKV().encode("theme", R.color.red)
+                MMKV.defaultMMKV().encode("theme_type", "red")
+                onThemeChangeListener.onThemeChange()
             }
             rbPurple.setOnClickListener {
-                MMKV.defaultMMKV().encode("theme", R.color.purple_200)
+                MMKV.defaultMMKV().encode("theme_type", "purple")
+                onThemeChangeListener.onThemeChange()
             }
             rbTeal.setOnClickListener {
-                MMKV.defaultMMKV().encode("theme", R.color.teal_200)
+                MMKV.defaultMMKV().encode("theme_type", "teal")
+                onThemeChangeListener.onThemeChange()
             }
             rbGrey.setOnClickListener {
-                MMKV.defaultMMKV().encode("theme", R.color.grey)
+                MMKV.defaultMMKV().encode("theme_type", "grey")
+                onThemeChangeListener.onThemeChange()
             }
             rbBlank.setOnClickListener {
-                MMKV.defaultMMKV().encode("theme", R.color.black)
+                MMKV.defaultMMKV().encode("theme_type", "black")
+                onThemeChangeListener.onThemeChange()
             }
         }
     }
 
     override fun show() {
         super.show()
-        when (MMKV.defaultMMKV().decodeInt("theme", R.color.pink)) {
-            R.color.pink -> {
+        when (MMKV.defaultMMKV().decodeString("theme_type", "pink")) {
+            "pink" -> {
                 mBinding.rbPink.isChecked = true
             }
-            R.color.red -> {
+            "red" -> {
                 mBinding.rbRed.isChecked = true
             }
-            R.color.purple_200 -> {
+            "purple" -> {
                 mBinding.rbPurple.isChecked = true
             }
-            R.color.teal_200 -> {
+            "teal" -> {
                 mBinding.rbTeal.isChecked = true
             }
-            R.color.grey -> {
+            "grey" -> {
                 mBinding.rbGrey.isChecked = true
             }
-            R.color.black -> {
+            "black" -> {
                 mBinding.rbBlank.isChecked = true
             }
             else -> {}

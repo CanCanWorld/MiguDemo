@@ -69,6 +69,7 @@ class PlayBarFragment
                 ivAlbum.visibility = View.VISIBLE
                 tvSongName.text = song.songName
                 tvSinger.text = song.singerName
+                Log.d(TAG, "refreshPlayBar: ${song.cover}")
                 Glide.with(this@PlayBarFragment)
                     .load(song.cover)
                     .into(ivAlbum)

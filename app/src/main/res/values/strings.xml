@@ -36,4 +36,7 @@
     <string name="back_to_parent">返回上一级</string>
     <string name="now_path">当前路径:</string>
     <string name="select">选择</string>
+    <string name="check_update">检测更新</string>
+    <string name="vip">限时VIP</string>
+    <string name="customer">联系客服</string>
 </resources>

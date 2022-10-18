@@ -1,27 +1,10 @@
 package com.zrq.migudemo.ui
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.view.animation.LinearInterpolator
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.zrq.migudemo.R
-import com.zrq.migudemo.adapter.ListSongAdapter
 import com.zrq.migudemo.adapter.SearchResultAdapter
-import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.FragmentSearchBinding
-import com.zrq.migudemo.interfaces.OnItemClickListener
-import com.zrq.migudemo.interfaces.OnSongChangeListener
-import com.zrq.migudemo.interfaces.OnSongDeleteListener
 import com.zrq.migudemo.util.Constants.TYPE_ALBUM
 import com.zrq.migudemo.util.Constants.TYPE_LYRICS
 import com.zrq.migudemo.util.Constants.TYPE_MV
@@ -78,14 +61,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(){
         fragmentList.add(SearchResultFragment.newInstance(TYPE_SINGER))
         fragmentList.add(SearchResultFragment.newInstance(TYPE_SONG_LIST))
         fragmentList.add(SearchResultFragment.newInstance(TYPE_ALBUM))
-        fragmentList.add(SearchResultFragment.newInstance(TYPE_MV))
-        fragmentList.add(SearchResultFragment.newInstance(TYPE_LYRICS))
         titles.add("歌曲")
         titles.add("歌手")
         titles.add("歌单")
         titles.add("专辑")
-        titles.add("MV")
-        titles.add("歌词")
         searchAdapter = SearchResultAdapter(childFragmentManager, fragmentList, titles)
         mBinding.viewPager.adapter = searchAdapter
         mBinding.tabLayout.setupWithViewPager(mBinding.viewPager)

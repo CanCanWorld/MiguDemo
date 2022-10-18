@@ -13,19 +13,23 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.SongOfSingerAdapter
+import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.bean.Singer
 import com.zrq.migudemo.bean.SongOfSinger
 import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentSingerInfoBinding
 import com.zrq.migudemo.db.SongDatabaseHelper
 import com.zrq.migudemo.interfaces.OnItemClickListener
+import com.zrq.migudemo.interfaces.OnMoreClickListener
 import com.zrq.migudemo.util.Constants.BASE_URL
 import com.zrq.migudemo.util.Constants.SINGER_INFO
 import com.zrq.migudemo.util.Constants.SINGER_SONG_LIST
+import com.zrq.migudemo.view.DownloadDialog
 import okhttp3.*
 import java.io.IOException
 
-class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClickListener {
+class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(),
+    OnItemClickListener, OnMoreClickListener {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -33,13 +37,17 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClic
         return FragmentSingerInfoBinding.inflate(inflater, container, false)
     }
 
-    private val listSong = ArrayList<SongOfSinger.SongListBean>()
+    private val list = ArrayList<SongOfSinger.SongListBean>()
+    private val listSong = ArrayList<SearchSong.MusicsDTO>()
     private lateinit var adapter: SongOfSingerAdapter
     private var offset = 1
     private var artistId = ""
+    private var downloadDialog: DownloadDialog? = null
+    private lateinit var songDaoImpl: SongDaoImpl
 
     override fun initData() {
-        adapter = SongOfSingerAdapter(requireContext(), listSong, this)
+        songDaoImpl = SongDaoImpl(SongDatabaseHelper(requireContext()))
+        adapter = SongOfSingerAdapter(requireContext(), list, this, this)
         mBinding.rvSongOfSinger.adapter = adapter
         mBinding.rvSongOfSinger.layoutManager = LinearLayoutManager(requireContext())
     }
@@ -101,6 +109,7 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClic
             .build()
         OkHttpClient().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                finishRefreshOrLoad()
                 Log.d(TAG, "onFailure: ")
             }
 
@@ -112,27 +121,69 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClic
                     val songOfSinger = Gson().fromJson(json, SongOfSinger::class.java)
                     if (songOfSinger != null && songOfSinger.songList != null) {
                         if (offset == 1)
-                            listSong.clear()
-                        listSong.addAll(songOfSinger.songList)
-                        requireActivity().runOnUiThread {
-                            adapter.notifyDataSetChanged()
-                            mBinding.refreshLayout.finishRefresh()
-                            mBinding.refreshLayout.finishLoadMore()
+                            list.clear()
+                        list.addAll(songOfSinger.songList)
+                        listSong.clear()
+                        for (i in list.indices) {
+                            val s = list[i]
+                            listSong.add(SearchSong.MusicsDTO().apply {
+                                songName = s.al.title
+                                albumName = s.al.album
+                                singerName = s.al.singer
+                                cover = "https://" + s.al.imgUrl.removePrefix("//")
+                                copyrightId = s.copyrightId
+                            })
                         }
+                        adapter.notifyDataSetChanged()
+                        finishRefreshOrLoad()
+                    }else{
+                        finishRefreshOrLoad()
                     }
+                }else{
+                    finishRefreshOrLoad()
                 }
             }
         })
     }
 
+    private fun finishRefreshOrLoad() {
+        requireActivity().runOnUiThread {
+            mBinding.refreshLayout.finishRefresh()
+            mBinding.refreshLayout.finishLoadMore()
+        }
+    }
+
     private fun refreshSingerInfo(data: Singer.DataDTO) {
         mBinding.apply {
-            tvSinger.text = data.anotherName
-            tvIntro.text = data.intro
+            collapsingToolbar.title = data.anotherName
             Glide.with(this@SingerInfoFragment)
                 .load(data.localArtistPicL)
                 .into(ivHead)
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun showPopMenu(view: View, position: Int) {
+        val popupMenu = PopupMenu(requireContext(), view, Gravity.END)
+        popupMenu.menuInflater.inflate(R.menu.menu_song_long_click, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_love -> {
+                    songDaoImpl.addSong(listSong[position])
+                }
+                R.id.menu_download -> {
+                    if (downloadDialog == null) {
+                        downloadDialog = DownloadDialog(requireContext(), requireActivity())
+                    }
+                    downloadDialog!!.downloadSong = listSong[position]
+                    downloadDialog!!.setTitle("选择下载音质")
+                    downloadDialog!!.show()
+                }
+                else -> {}
+            }
+            true
+        }
+        popupMenu.show()
     }
 
     companion object {
@@ -140,6 +191,11 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(), OnItemClic
     }
 
     override fun onItemClick(view: View, position: Int) {
-        Toast.makeText(requireContext(), "click$position", Toast.LENGTH_SHORT).show()
+        mainModel.setList(listSong)
+        mainModel.onSongChangeListener?.onSongChange(position)
+    }
+
+    override fun onMoreClick(view: View, position: Int) {
+        showPopMenu(view, position)
     }
 }

@@ -4,21 +4,18 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.R
 import com.zrq.migudemo.adapter.LoveSongAdapter
-import com.zrq.migudemo.bean.DownloadSong
 import com.zrq.migudemo.bean.Picture
 import com.zrq.migudemo.bean.SearchSong
-import com.zrq.migudemo.bean.Song
 import com.zrq.migudemo.dao.SongDaoImpl
 import com.zrq.migudemo.databinding.FragmentLoveBinding
 import com.zrq.migudemo.db.SongDatabaseHelper
-import com.zrq.migudemo.helper.PlayerHelper
+import com.zrq.migudemo.interfaces.OnBackgroundChangeListener
 import com.zrq.migudemo.interfaces.OnItemClickListener
 import com.zrq.migudemo.interfaces.OnMoreClickListener
 import com.zrq.migudemo.util.Constants
@@ -30,7 +27,7 @@ import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
-    OnMoreClickListener {
+    OnMoreClickListener, OnBackgroundChangeListener {
     override fun providedViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -42,12 +39,10 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     private lateinit var adapter: LoveSongAdapter
     private val listSong = ArrayList<SearchSong.MusicsDTO>()
     private var random = 0
-    private lateinit var downloadDialog: DownloadDialog
+    private var downloadDialog: DownloadDialog? = null
 
     override fun initData() {
-        downloadDialog = DownloadDialog(requireContext(), requireActivity())
-        downloadDialog.setTitle("选择下载音质")
-        load()
+        loadBg()
         songDaoImpl = SongDaoImpl(SongDatabaseHelper(requireContext()))
         listSong.clear()
         listSong.addAll(songDaoImpl.listAllSongs())
@@ -57,6 +52,9 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
     }
 
     override fun initEvent() {
+
+        mainModel.onBackgroundChangeListener = this
+
         mBinding.apply {
 
         }
@@ -72,9 +70,9 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
         mainModel.onSongChangeListener?.onSongChange(position)
     }
 
-    @SuppressLint("RtlHardcoded", "NotifyDataSetChanged")
+    @SuppressLint( "NotifyDataSetChanged")
     private fun showPopMenu(view: View, position: Int) {
-        val popupMenu = PopupMenu(requireContext(), view, Gravity.RIGHT)
+        val popupMenu = PopupMenu(requireContext(), view, Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.menu_love_long_click, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -84,8 +82,12 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
                     adapter.notifyDataSetChanged()
                 }
                 R.id.menu_download -> {
-                    downloadDialog.downloadSong = listSong[position]
-                    downloadDialog.show()
+                    if (downloadDialog == null) {
+                        downloadDialog = DownloadDialog(requireContext(), requireActivity())
+                    }
+                    downloadDialog!!.downloadSong = listSong[position]
+                    downloadDialog!!.setTitle("选择下载音质")
+                    downloadDialog!!.show()
                 }
                 else -> {}
             }
@@ -94,12 +96,12 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
         popupMenu.show()
     }
 
-    private fun load() {
+    private fun loadBg() {
         random = Random(Date().time).nextInt(1000)
         val bgCategory = MMKV.defaultMMKV().decodeString("background", Constants.ANIMATION)
             ?: Constants.ANIMATION
         val url = Constants.getPicByCategory(bgCategory, 1, random)
-        Log.d(HomeFragment.TAG, "load: $url")
+        Log.d(TAG, "load: $url")
         val request: Request = Request.Builder()
             .url(url)
             .method("GET", null)
@@ -107,7 +109,7 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
 
         OkHttpClient().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d(HomeFragment.TAG, "onFailure: ")
+                Log.d(TAG, "onFailure: ")
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -128,5 +130,9 @@ class LoveFragment : BaseFragment<FragmentLoveBinding>(), OnItemClickListener,
 
     override fun onMoreClick(view: View, position: Int) {
         showPopMenu(view, position)
+    }
+
+    override fun onBackgroundChange() {
+        loadBg()
     }
 }
