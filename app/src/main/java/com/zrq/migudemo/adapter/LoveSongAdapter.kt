@@ -23,9 +23,7 @@ class LoveSongAdapter(
 
     override fun onBindViewHolder(holder: VH<ItemSongOfSingerBinding>, position: Int) {
         holder.binding.apply {
-            if (position == list.size) {
-                root.visibility = View.INVISIBLE
-            } else {
+            if (position < list.size) {
                 tvSong.text = list[position].songName
                 tvNumber.text = position.toString()
                 tvSinger.text = list[position].singerName
@@ -35,6 +33,9 @@ class LoveSongAdapter(
                 root.setOnClickListener {
                     onItemClickListener.onItemClick(it, position)
                 }
+                root.visibility = View.VISIBLE
+            } else {
+                root.visibility = View.GONE
             }
         }
     }
