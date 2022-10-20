@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
-import com.zrq.migudemo.R
 import com.zrq.migudemo.bean.Lyric
 import com.zrq.migudemo.bean.LyricByTime
 import com.zrq.migudemo.bean.SearchSong

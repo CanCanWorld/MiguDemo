@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -134,12 +133,14 @@ class SingerInfoFragment : BaseFragment<FragmentSingerInfoBinding>(),
                                 copyrightId = s.copyrightId
                             })
                         }
-                        adapter.notifyDataSetChanged()
+                        requireActivity().runOnUiThread {
+                            adapter.notifyDataSetChanged()
+                        }
                         finishRefreshOrLoad()
-                    }else{
+                    } else {
                         finishRefreshOrLoad()
                     }
-                }else{
+                } else {
                     finishRefreshOrLoad()
                 }
             }

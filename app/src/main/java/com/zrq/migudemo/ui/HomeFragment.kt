@@ -206,7 +206,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                         if (themeDialog == null) {
                             themeDialog =
                                 ThemeDialog(requireContext(), requireActivity(), this@HomeFragment)
-                            themeDialog!!.setTitle("配色选择")
+                            themeDialog!!.setTitle("主题选择")
                         }
                         themeDialog!!.show()
                     }

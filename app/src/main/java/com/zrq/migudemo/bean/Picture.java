@@ -1,7 +1,10 @@
 package com.zrq.migudemo.bean;
 
+import androidx.annotation.Keep;
+
 import java.util.List;
 
+@Keep
 public class Picture {
 
     private String msg;

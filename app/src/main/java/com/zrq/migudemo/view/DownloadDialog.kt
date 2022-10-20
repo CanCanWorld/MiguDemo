@@ -13,7 +13,6 @@ import android.widget.Button
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.zrq.migudemo.R
-import com.zrq.migudemo.bean.Cate
 import com.zrq.migudemo.bean.DownloadSong
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.bean.Song

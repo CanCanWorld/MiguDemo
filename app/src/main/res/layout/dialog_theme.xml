@@ -38,6 +38,13 @@
             android:buttonTint="@color/white" />
 
         <RadioButton
+            android:id="@+id/rb_gold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gold"
+            android:buttonTint="@color/white" />
+
+        <RadioButton
             android:id="@+id/rb_grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

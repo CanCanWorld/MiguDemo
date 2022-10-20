@@ -8,9 +8,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.R
-import com.zrq.migudemo.bean.Cate
 import com.zrq.migudemo.databinding.DialogPlayQualityBinding
-import com.zrq.migudemo.util.Constants
 import com.zrq.migudemo.util.Constants.QUALITY_BETTER
 import com.zrq.migudemo.util.Constants.QUALITY_HIGH
 import com.zrq.migudemo.util.Constants.QUALITY_NORMAL

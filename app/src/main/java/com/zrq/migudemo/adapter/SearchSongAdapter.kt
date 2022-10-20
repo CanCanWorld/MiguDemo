@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.ItemSearchSongBinding
 import com.zrq.migudemo.interfaces.OnItemClickListener
-import com.zrq.migudemo.interfaces.OnItemLongClickListener
 import com.zrq.migudemo.interfaces.OnMoreClickListener
 
 class SearchSongAdapter(

@@ -18,7 +18,7 @@ class SearchResultAdapter(
         return list[position]
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return titles[position]
     }
 }

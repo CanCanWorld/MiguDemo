@@ -6,8 +6,6 @@ import android.view.inputmethod.EditorInfo
 import com.zrq.migudemo.adapter.SearchResultAdapter
 import com.zrq.migudemo.databinding.FragmentSearchBinding
 import com.zrq.migudemo.util.Constants.TYPE_ALBUM
-import com.zrq.migudemo.util.Constants.TYPE_LYRICS
-import com.zrq.migudemo.util.Constants.TYPE_MV
 import com.zrq.migudemo.util.Constants.TYPE_SINGER
 import com.zrq.migudemo.util.Constants.TYPE_SONG
 import com.zrq.migudemo.util.Constants.TYPE_SONG_LIST

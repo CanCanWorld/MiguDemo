@@ -12,7 +12,6 @@ import com.zrq.migudemo.bean.Song
 import com.zrq.migudemo.interfaces.IPlayerControl
 import com.zrq.migudemo.interfaces.IPlayerViewControl
 import com.zrq.migudemo.util.Constants.BASE_URL
-import com.zrq.migudemo.util.Constants.LYRIC
 import com.zrq.migudemo.util.Constants.QUALITY_BETTER
 import com.zrq.migudemo.util.Constants.SONG
 import okhttp3.*

@@ -48,6 +48,9 @@ class MainActivity : AppCompatActivity() {
             "teal" -> {
                 id = R.style.Theme_Teal
             }
+            "gold" -> {
+                id = R.style.Theme_Gold
+            }
             "grey" -> {
                 id = R.style.Theme_Grey
             }

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.zrq.migudemo.bean.SearchSongList
-import com.zrq.migudemo.databinding.ItemSearchSongBinding
 import com.zrq.migudemo.databinding.ItemSongListBinding
 import com.zrq.migudemo.interfaces.OnItemClickListener
 

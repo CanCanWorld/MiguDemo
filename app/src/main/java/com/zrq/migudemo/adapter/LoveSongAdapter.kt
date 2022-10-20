@@ -2,12 +2,12 @@ package com.zrq.migudemo.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.databinding.ItemSongOfSingerBinding
 import com.zrq.migudemo.interfaces.OnItemClickListener
-import com.zrq.migudemo.interfaces.OnItemLongClickListener
 import com.zrq.migudemo.interfaces.OnMoreClickListener
 
 class LoveSongAdapter(
@@ -23,19 +23,23 @@ class LoveSongAdapter(
 
     override fun onBindViewHolder(holder: VH<ItemSongOfSingerBinding>, position: Int) {
         holder.binding.apply {
-            tvSong.text = list[position].songName
-            tvNumber.text = position.toString()
-            tvSinger.text = list[position].singerName
-            ibMore.setOnClickListener {
-                onMoreClickListener.onMoreClick(it, position)
-            }
-            root.setOnClickListener {
-                onItemClickListener.onItemClick(it, position)
+            if (position == list.size) {
+                root.visibility = View.INVISIBLE
+            } else {
+                tvSong.text = list[position].songName
+                tvNumber.text = position.toString()
+                tvSinger.text = list[position].singerName
+                ibMore.setOnClickListener {
+                    onMoreClickListener.onMoreClick(it, position)
+                }
+                root.setOnClickListener {
+                    onItemClickListener.onItemClick(it, position)
+                }
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return list.size + 1
     }
 }

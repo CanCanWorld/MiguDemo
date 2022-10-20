@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/red</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="mainColor">@color/red</item>
     </style>
@@ -24,7 +24,7 @@
         <item name="colorSecondaryVariant">@color/pink</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/pink</item>
+        <item name="android:statusBarColor" >@color/pink</item>
         <!-- Customize your theme here. -->
         <item name="mainColor">@color/pink</item>
     </style>
@@ -38,7 +38,7 @@
         <item name="colorSecondaryVariant">@color/purple_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/purple_200</item>
+        <item name="android:statusBarColor" >@color/purple_200</item>
         <!-- Customize your theme here. -->
         <item name="mainColor">@color/purple_200</item>
     </style>
@@ -52,7 +52,7 @@
         <item name="colorSecondaryVariant">@color/black</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+        <item name="android:statusBarColor" >@color/black</item>
         <!-- Customize your theme here. -->
         <item name="mainColor">@color/black</item>
     </style>
@@ -66,9 +66,23 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/teal_200</item>
+        <item name="android:statusBarColor" >@color/teal_200</item>
         <!-- Customize your theme here. -->
         <item name="mainColor">@color/teal_200</item>
+    </style>
+    <style name="Theme.Gold" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/gold</item>
+        <item name="colorPrimaryVariant">@color/gold</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/gold</item>
+        <item name="colorSecondaryVariant">@color/gold</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/gold</item>
+        <!-- Customize your theme here. -->
+        <item name="mainColor">@color/gold</item>
     </style>
     <style name="Theme.Grey" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
@@ -80,7 +94,7 @@
         <item name="colorSecondaryVariant">@color/grey</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/grey</item>
+        <item name="android:statusBarColor" >@color/grey</item>
         <!-- Customize your theme here. -->
         <item name="mainColor">@color/grey</item>
     </style>

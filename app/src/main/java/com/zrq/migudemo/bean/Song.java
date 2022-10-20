@@ -1,5 +1,8 @@
 package com.zrq.migudemo.bean;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class Song {
 
     private String returnCode;

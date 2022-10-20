@@ -3,13 +3,11 @@ package com.zrq.migudemo.view
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import com.tencent.mmkv.MMKV
 import com.zrq.migudemo.R
-import com.zrq.migudemo.bean.Cate
 import com.zrq.migudemo.databinding.DialogThemeBinding
 import com.zrq.migudemo.interfaces.OnThemeChangeListener
 
@@ -57,6 +55,10 @@ class ThemeDialog(
             }
             rbTeal.setOnClickListener {
                 MMKV.defaultMMKV().encode("theme_type", "teal")
+                onThemeChangeListener.onThemeChange()
+            }
+            rbGold.setOnClickListener {
+                MMKV.defaultMMKV().encode("theme_type", "gold")
                 onThemeChangeListener.onThemeChange()
             }
             rbGrey.setOnClickListener {

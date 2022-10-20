@@ -44,6 +44,6 @@
         android:backgroundTint="@color/transparent_"
         android:padding="15dp"
         android:src="@drawable/ic_baseline_more_vert_24"
-        app:tint="@color/grey_" />
+        app:tint="@color/grey" />
 
 </LinearLayout>

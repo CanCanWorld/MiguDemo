@@ -2,7 +2,6 @@ package com.zrq.migudemo
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.zrq.migudemo.bean.LyricByTime
 import com.zrq.migudemo.bean.SearchSong
 import com.zrq.migudemo.interfaces.*
 
